@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <locale.h>
 #include <stdlib.h>
 #include <string.h>
 
@@ -20,8 +21,32 @@ int cadastro();
 int login();
 
 int main(){
+    setlocale(LC_ALL, "Portuguese");
+    int opc;
 
-    login();
+    while (1){
+        printf("Bem vindo(a), diga-me, o que deseja fazer? \n");
+        printf("1. Novo jogo \n");
+        printf("2. Carregar progresso \n");
+        printf("3. Sair \n");
+        scanf("%d", &opc);
+
+        if(opc == 1){
+            cadastro();
+        }
+        else if(opc == 2){
+            login();
+        }
+        else if(opc == 3){
+            printf("Saindo... \n");
+            break;
+        }
+        else{
+            printf("Inválido, tente novamente. \n");
+        }
+    }
+
+
 
     return 0;
 }
