@@ -53,12 +53,61 @@ int main(){
 
 int cadastro(){
     jogador novojogador;
+    int opccharacter;
 
     printf("Bem vindo desafiante! Como prefere ser chamado? \n");
     scanf("%s", novojogador.usuario);
 
     printf("Certo, %s, agora diga sua palavra-passe, para quando voltar, sabermos se é você mesmo. \n", novojogador.usuario);
     scanf("%s", novojogador.senha);
+
+    printf("Perfeito, agora vamos montar seu personagem e atributos. \n");
+    printf("1. Guerreiro. \n");
+    printf("2. Bardo. \n");
+    printf("3. Druida. \n");
+    printf("4. Mago. \n");
+    printf("5. Samurai. \n");
+    printf("6. Arqueiro. \n");
+    
+    printf("Escolha uma opção. \n");
+    scanf("%d", &opccharacter);
+
+    if(opccharacter == 1){
+        int confirm;
+        printf("lore guerreiro\n");
+        printf("Deseja escolher a classe Guerreiro? 1 - Sim / 2 - Não \n");
+        scanf("%d", &confirm);
+        if(confirm == 1){
+
+        novojogador.vida = 100;
+        novojogador.nivel = 1;
+        novojogador.xp = 0;
+        novojogador.mana = 50;
+        novojogador.forca = 10;
+        novojogador.inteligencia = 10;
+        novojogador.destreza = 10;
+        novojogador.vitalidade = 10;
+        strcpy(novojogador.classe, "guerreiro");   
+        }
+        else{
+            printf("Voltando... \n");
+        }
+
+    }
+    else if(opccharacter == 2){
+        int confirm;
+        printf("lore bardo \n");
+        printf("Deseja escolher a classe Bardo? 1 - Sim / 2 - Não \n");
+        scanf("%d", &confirm);
+        if(confirm == 1){
+
+        }
+
+    }
+    
+
+
+
 
     novojogador.vida = 100;
     novojogador.nivel = 1;
