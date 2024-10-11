@@ -2,6 +2,7 @@
 #include <locale.h>
 #include <stdlib.h>
 #include <string.h>
+#include <time.h>
 
 typedef struct {
     char usuario[30];
@@ -11,6 +12,8 @@ typedef struct {
     int forca;
     int inteligencia;
     int agilidade;
+    int ataquefisico;
+    int ataqueespecial;
 } jogador;
 
 typedef struct {
@@ -19,10 +22,13 @@ typedef struct {
     int forca;
     int inteligencia;
     int agilidade;
+    int ataquefisico;
+    int ataqueespecial;
 } inimigo;
 
 int cadastro();
 int login();
+void combate(jogador *jogador, inimigo *inimigo);
 
 int main(){
     setlocale(LC_ALL, "Portuguese");
@@ -62,7 +68,7 @@ int cadastro(){
     printf("Bem vindo desafiante! Como prefere ser chamado? \n");
     scanf("%s", novojogador.usuario);
 
-    printf("Certo, %s, agora diga sua palavra-passe, para quando voltar, sabermos se é você mesmo. \n", novojogador.usuario);
+    printf("Certo, %s, agora me diga um código de 6 números, para quando voltar, sabermos se é você mesmo. \n", novojogador.usuario);
     scanf("%s", novojogador.senha);
 
     printf("Perfeito, agora vamos montar seu personagem e atributos. \n");
@@ -78,7 +84,7 @@ int cadastro(){
 
         if(opccharacter == 1){
             int confirm;
-            printf("Nascido no centro de Faramont, sempre dedicou sua vida inteira para o rei. Foi o guerreiro mais leal e guiou incontáveis exércitos para a vitória. Usando espada e escudo, é um mestre na arte de atacar e defender.\nVida: 120\nForca: 30\nInteligencia: 20\nAgilidade: 20\n");
+            printf("Nascido no centro de Faramont, sempre dedicou sua vida inteira para o rei. Foi o guerreiro mais leal e guiou incontáveis exércitos para a vitória. Usando espada e escudo, é um mestre na arte de atacar e defender.\nVida: 120\nForca: 30\nInteligencia: 20\nAgilidade: 20\nAtaque físico: 20\nAtaque especial: 10");
             printf("Deseja escolher a classe Guerreiro? 1 - Sim / 2 - Não \n");
             scanf("%d", &confirm);
             if(confirm == 1){
@@ -86,8 +92,10 @@ int cadastro(){
                 novojogador.forca = 30;
                 novojogador.inteligencia = 5;
                 novojogador.agilidade = 10;
+                novojogador.ataquefisico = 20;
+                novojogador.ataqueespecial = 10;
                 strcpy(novojogador.classe, "guerreiro");
-                printf("Seja bem vindo, guerreiro %s", novojogador.usuario);
+                printf("Seja bem vindo, guerreiro %s\n", novojogador.usuario);
                 break;
             }
             else{
@@ -98,7 +106,7 @@ int cadastro(){
         else if(opccharacter == 2){
             int confirm;
             printf("lore mago \n");
-            printf("Vida: 70\nForça: 5\nInteligencia: 50\nAgilidade: 25\n");
+            printf("Vida: 70\nForça: 5\nInteligencia: 50\nAgilidade: 25\nAtaque físico: 10\nAtaque especial: 20");
             printf("Deseja escolher a classe Mago? 1 - Sim / 2 - Não \n");
             scanf("%d", &confirm);
             if(confirm == 1){
@@ -106,8 +114,10 @@ int cadastro(){
                 novojogador.forca = 5;
                 novojogador.inteligencia = 50;
                 novojogador.agilidade = 25;
+                novojogador.ataquefisico = 10;
+                novojogador.ataqueespecial = 20;
                 strcpy(novojogador.classe, "mago");
-                printf("Seja bem vindo, mago %s", novojogador.usuario);
+                printf("Seja bem vindo, mago %s\n", novojogador.usuario);
                 break;               
             }
             else{
@@ -118,7 +128,7 @@ int cadastro(){
         else if(opccharacter == 3){
             int confirm;
             printf("lore druida \n");
-            printf("Vida: 100\nForça: 20\nInteligencia: 20\nAgilidade: 20\n");
+            printf("Vida: 100\nForça: 20\nInteligencia: 20\nAgilidade: 20\nAtaque físico: 15\nAtaque especial: 15\n");
             printf("Deseja escolher a classe Druida? 1 - Sim / 2 - Não \n");
             scanf("%d", &confirm);
             if(confirm == 1){
@@ -126,8 +136,10 @@ int cadastro(){
                 novojogador.forca = 20;
                 novojogador.inteligencia = 20;
                 novojogador.agilidade = 20;
+                novojogador.ataquefisico = 15;
+                novojogador.ataqueespecial = 15;
                 strcpy(novojogador.classe, "druida");
-                printf("Seja bem vindo, druida %s", novojogador.usuario);    
+                printf("Seja bem vindo, druida %s\n", novojogador.usuario);    
                 break;            
             }     
             else{
@@ -137,7 +149,7 @@ int cadastro(){
         else if(opccharacter == 4){
             int confirm;
             printf("lore ninja \n");
-            printf("Vida: 90\nForça: 15\nInteligencia: 15\nAgilidade: 40\n");
+            printf("Vida: 90\nForça: 15\nInteligencia: 15\nAgilidade: 40\nAtaque físico: 15\nAtaque especial: 15\n");
             printf("Deseja escolher a classe Ninja? 1 - Sim / 2 - Não \n");
             scanf("%d", &confirm);
             if(confirm == 1){
@@ -145,8 +157,10 @@ int cadastro(){
                 novojogador.forca = 15;
                 novojogador.inteligencia = 15;
                 novojogador.agilidade = 40;
+                novojogador.ataquefisico = 15;
+                novojogador.ataqueespecial = 15;
                 strcpy(novojogador.classe, "ninja");
-                printf("Seja bem vindo, ninja %s", novojogador.usuario);
+                printf("Seja bem vindo, ninja %s\n", novojogador.usuario);
                 break;
             }
             else{
@@ -174,7 +188,7 @@ int login(){
     printf("Bem vindo de volta! Diga-me como é chamado em nossas terras. \n");
     scanf("%s", usuario);
 
-    printf("Certo, agora me diga sua palavra-passe, apenas para confirmação. \n");
+    printf("Certo, agora me diga seu código de 6 números, apenas para confirmação. \n");
     scanf("%s", senha);
 
     FILE *arquivo = fopen("jogadores.bin", "rb");
@@ -196,3 +210,104 @@ int login(){
     return 1;
 }
 
+void combate(jogador *jogador, inimigo *inimigo) {
+    srand(time(NULL));
+    int turno = 1;
+    int dano, atkinimigo;
+    int opcatk;
+
+    while (jogador->vida > 0 && inimigo->vida > 0) {
+        printf("Turno %d\n", turno);
+
+        if (jogador->agilidade > inimigo->agilidade) {
+
+            printf("Vez de %s\n", jogador->usuario);
+            printf("1 - Ataque físico\n2 - Ataque especial\n");
+            scanf("%d", &opcatk);
+
+            if (opcatk == 1) {
+                printf("%s ataca com um ataque físico.\n", jogador->usuario);
+                if (jogador->forca >= inimigo->forca) {
+                    dano = (jogador->forca / 10) * jogador->ataquefisico;
+                    inimigo->vida -= dano;
+                } else {
+                    inimigo->vida -= jogador->ataquefisico;
+                }
+            } else if (opcatk == 2) {
+                printf("%s ataca com um ataque especial.\n", jogador->usuario);
+                if (jogador->inteligencia > inimigo->inteligencia) {
+                    dano = (jogador->inteligencia / 10) * jogador->ataqueespecial;
+                    inimigo->vida -= dano;
+                } else {
+                    inimigo->vida -= jogador->ataqueespecial;
+                }
+            }
+
+            if (inimigo->vida <= 0) {
+                printf("%s foi derrotado!\n", inimigo->nome);
+                break;
+            }
+
+            printf("Vez de %s\n", inimigo->nome);
+            atkinimigo = rand() % 2;
+
+            if (atkinimigo == 0) {
+                printf("%s atacou com um ataque físico\n", inimigo->nome);
+                jogador->vida -= inimigo->ataquefisico;
+            } else {
+                printf("%s atacou com um ataque especial\n", inimigo->nome);
+                jogador->vida -= inimigo->ataqueespecial;
+            }
+
+            if (jogador->vida <= 0) {
+                printf("Você foi derrotado!\n");
+                break;
+            }
+        } else {
+            printf("Vez de %s\n", inimigo->nome);
+            atkinimigo = rand() % 2;
+
+            if (atkinimigo == 0) {
+                printf("%s atacou com um ataque físico\n", inimigo->nome);
+                jogador->vida -= inimigo->ataquefisico;
+            } else {
+                printf("%s atacou com um ataque especial\n", inimigo->nome);
+                jogador->vida -= inimigo->ataqueespecial;
+            }
+
+            if (jogador->vida <= 0) {
+                printf("Você foi derrotado!\n");
+                break;
+            }
+
+            printf("Vez de %s\n", jogador->usuario);
+            printf("1 - Ataque físico\n2 - Ataque especial\n");
+            scanf("%d", &opcatk);
+
+            if (opcatk == 1) {
+                printf("%s ataca com um ataque físico.\n", jogador->usuario);
+                if (jogador->forca >= inimigo->forca) {
+                    dano = (jogador->forca / 10) * jogador->ataquefisico;
+                    inimigo->vida -= dano;
+                } else {
+                    inimigo->vida -= jogador->ataquefisico;
+                }
+            } else if (opcatk == 2) {
+                printf("%s ataca com um ataque especial.\n", jogador->usuario);
+                if (jogador->inteligencia > inimigo->inteligencia) {
+                    dano = (jogador->inteligencia / 10) * jogador->ataqueespecial;
+                    inimigo->vida -= dano;
+                } else {
+                    inimigo->vida -= jogador->ataqueespecial;
+                }
+            }
+
+            if (inimigo->vida <= 0) {
+                printf("%s foi derrotado!\n", inimigo->nome);
+                break;
+            }
+        }
+
+        turno++;
+    }
+}
