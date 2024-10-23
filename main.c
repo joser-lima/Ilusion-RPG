@@ -1,10 +1,22 @@
-#include <windows.h>
-#include <unistd.h>
 #include <stdio.h>
 #include <locale.h>
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
+#ifdef _WIN32
+    #include <windows.h>
+#else
+    #include <unistd.h>
+#endif
+
+#ifdef _WIN32
+    #include <windows.h>
+    #define SLEEP(ms) Sleep(ms)
+#else
+    #include <unistd.h>
+    #define SLEEP(ms) usleep((ms) * 1000)
+#endif
+
 
 typedef struct {
     char usuario[30];
@@ -309,49 +321,49 @@ void combate(jogador *jogador, inimigo *inimigo) {
         if (jogador->agilidade > inimigo->agilidade) {
 
             printf("Vez de %s\n", jogador->usuario);
-            sleep(1);
+            SLEEP(1000);
             printf("1 - Ataque físico\n2 - Ataque especial\n3 - Usar cura\n");
             scanf("%d", &opcatk);
 
             if (opcatk == 1) {
                 int dado = (rand() % 20) + 1;
-                sleep(1);
+                SLEEP(1000);
                 printf("%s ataca com um ataque físico.\n", jogador->usuario);
                 if (jogador->forca >= inimigo->forca) {
                     if(dado >= 17){        
-                        sleep(1);
+                        SLEEP(1000);
                         printf("Você rolou um d20 e obteve: %d\n", dado);
-                        sleep(1);
+                        SLEEP(1000);
                         printf("Acerto crítico!\n");
                         dano = ((jogador->forca / 10) * jogador->ataquefisico) * 2;
                         inimigo->vida -= dano;
-                        sleep(1);
+                        SLEEP(1000);
                         printf("%s causou %d de dano.\n",jogador->usuario, dano);
-                        sleep(1);
+                        SLEEP(1000);
                         printf("Vida de %s restante: %d\n",inimigo->nome, inimigo->vida);
                         salvar(jogador);
                         pausar();
                         limpar();
                     }
                     else if(dado >= 0 && dado < 4){
-                        sleep(1);
+                        SLEEP(1000);
                         printf("Você rolou um d20 e obteve: %d\n", dado);
-                        sleep(1);
+                        SLEEP(1000);
                         printf("Errou o ataque!\n"); 
                         salvar(jogador);
                         pausar();
                         limpar();                       
                     }
                     else{
-                        sleep(1);
+                        SLEEP(1000);
                         printf("Você rolou um d20 e obteve: %d\n", dado);
-                        sleep(1);
+                        SLEEP(1000);
                         printf("Dano comum!\n");  
                         dano = (jogador->forca / 10) * jogador->ataquefisico;
                         inimigo->vida -= dano;
-                        sleep(1);
+                        SLEEP(1000);
                         printf("%s causou %d de dano.\n",jogador->usuario, dano);
-                        sleep(1);
+                        SLEEP(1000);
                         printf("Vida de %s restante: %d\n",inimigo->nome, inimigo->vida);
                         salvar(jogador);
                         pausar();
@@ -359,40 +371,40 @@ void combate(jogador *jogador, inimigo *inimigo) {
                     }
                 } else {
                     if(dado >=17){
-                        sleep(1);
+                        SLEEP(1000);
                         printf("Você rolou um d20 e obteve: %d\n", dado);
-                        sleep(1);
+                        SLEEP(1000);
                         printf("Acerto crítico!\n");
                         dano = jogador->ataquefisico * 2;
                         inimigo->vida -= jogador->ataquefisico * 2; 
-                        sleep(1);
+                        SLEEP(1000);
                         printf("%s causou %d de dano.\n",jogador->usuario, dano);
-                        sleep(1);
+                        SLEEP(1000);
                         printf("Vida de %s restante: %d\n",inimigo->nome, inimigo->vida);
                         salvar(jogador);
                         pausar();
                         limpar();
                     }
                     else if(dado >= 0 && dado < 4){
-                        sleep(1);
+                        SLEEP(1000);
                         printf("Você rolou um d20 e obteve: %d\n", dado);
-                        sleep(1);
+                        SLEEP(1000);
                         printf("Errou o ataque!\n");
-                        sleep(1);
+                        SLEEP(1000);
                         printf("Vida de %s restante: %d\n",inimigo->nome, inimigo->vida);
                         salvar(jogador);
                         pausar();
                         limpar();
                     }
                     else{
-                        sleep(1);
+                        SLEEP(1000);
                         printf("Você rolou um d20 e obteve: %d\n", dado);
-                        sleep(1);
+                        SLEEP(1000);
                         printf("Dano comum!\n");
                         inimigo->vida -= jogador->ataquefisico;
-                        sleep(1);
+                        SLEEP(1000);
                         printf("%s causou %d de dano.\n",jogador->usuario, jogador->ataquefisico);
-                        sleep(1);
+                        SLEEP(1000);
                         printf("Vida de %s restante: %d\n",inimigo->nome, inimigo->vida);
                         salvar(jogador);
                         pausar();
@@ -402,45 +414,45 @@ void combate(jogador *jogador, inimigo *inimigo) {
             } else if (opcatk == 2) {
                 srand(time(NULL));;
                 int dado = (rand() % 20) + 1;
-                sleep(1);
+                SLEEP(1000);
                 printf("%s ataca com um ataque especial.\n", jogador->usuario);
                 if (jogador->inteligencia > inimigo->inteligencia) {
                     if(dado >= 17){
-                        sleep(1);
+                        SLEEP(1000);
                         printf("Você rolou um d20 e obteve: %d\n", dado);
-                        sleep(1);
+                        SLEEP(1000);
                         printf("Acerto crítico!\n");
                         dano = ((jogador->inteligencia / 10) * jogador->ataqueespecial) * 2;
                         inimigo->vida -= dano;
-                        sleep(1);
+                        SLEEP(1000);
                         printf("%s causou %d de dano.\n",jogador->usuario, dano);
-                        sleep(1);
+                        SLEEP(1000);
                         printf("Vida de %s restante: %d\n",inimigo->nome, inimigo->vida);
                         salvar(jogador);
                         pausar();
                         limpar();
                     }
                     else if(dado >= 0 && dado < 4){
-                        sleep(1);
+                        SLEEP(1000);
                         printf("Você rolou um d20 e obteve: %d\n", dado);
-                        sleep(1);
+                        SLEEP(1000);
                         printf("Errou o ataque!\n");
-                        sleep(1);
+                        SLEEP(1000);
                         printf("Vida de %s restante: %d\n",inimigo->nome, inimigo->vida);
                         salvar(jogador);
                         pausar();
                         limpar();                       
                     }
                     else{
-                        sleep(1);
+                        SLEEP(1000);
                         printf("Você rolou um d20 e obteve: %d\n", dado);
-                        sleep(1);
+                        SLEEP(1000);
                         printf("Dano comum!\n");
                         dano = (jogador->inteligencia / 10) * jogador->ataqueespecial;
                         inimigo->vida -= dano;
-                        sleep(1);
+                        SLEEP(1000);
                         printf("%s causou %d de dano.\n",jogador->usuario, dano);
-                        sleep(1);
+                        SLEEP(1000);
                         printf("Vida de %s restante: %d\n",inimigo->nome, inimigo->vida); 
                         salvar(jogador);
                         pausar();
@@ -448,39 +460,39 @@ void combate(jogador *jogador, inimigo *inimigo) {
                     }
                 } else {
                     if(dado >= 17){
-                        sleep(1);
+                        SLEEP(1000);
                         printf("Você rolou um d20 e obteve: %d\n", dado);
-                        sleep(1);
+                        SLEEP(1000);
                         printf("Acerto crítico!\n"); 
                         dano = jogador->ataqueespecial * 2;
                         inimigo->vida -= jogador->ataqueespecial * 2;
-                        sleep(1);
+                        SLEEP(1000);
                         printf("%s causou %d de dano.\n",jogador->usuario, dano); 
                         salvar(jogador);       
                         pausar();
                         limpar();               
                     }
                     else if(dado >= 0 && dado < 4){
-                        sleep(1);
+                        SLEEP(1000);
                         printf("Você rolou um d20 e obteve: %d\n", dado);
-                        sleep(1);
+                        SLEEP(1000);
                         printf("Errou o ataque!\n");
-                        sleep(1);
+                        SLEEP(1000);
                         printf("Vida de %s restante: %d\n",inimigo->nome, inimigo->vida);    
                         salvar(jogador);        
                         pausar();
                         limpar();            
                     }
                     else{
-                        sleep(1);
+                        SLEEP(1000);
                         printf("Você rolou um d20 e obteve: %d\n", dado);
-                        sleep(1);
+                        SLEEP(1000);
                         printf("Dano comum!\n");                       
                         inimigo->vida -= jogador->ataqueespecial;
-                        sleep(1);
+                        SLEEP(1000);
                         printf("%s causou %d de dano.\n",jogador->usuario, jogador->ataqueespecial);
                         salvar(jogador);
-                        sleep(1);
+                        SLEEP(1000);
                         printf("Vida de %s restante: %d\n",inimigo->nome, inimigo->vida); 
                         pausar();
                         limpar();
@@ -506,44 +518,44 @@ void combate(jogador *jogador, inimigo *inimigo) {
             if (atkinimigo == 0) {
                 srand(time(NULL));;
                 int dado = (rand() % 20) + 1;
-                sleep(1);
+                SLEEP(1000);
                 printf("%s atacou com um ataque físico\n", inimigo->nome);
                 if(dado >= 17){
-                    sleep(1);
+                    SLEEP(1000);
                     printf("%s rolou um d20 e obteve: %d\n",inimigo->nome, dado);
-                    sleep(1);
+                    SLEEP(1000);
                     printf("Acerto crítico!\n");
                     jogador->vida -= (inimigo->ataquefisico) * 2;
                     dano = (inimigo->ataquefisico) * 2;
-                    sleep(1);
+                    SLEEP(1000);
                     printf("%s causou %d de dano.\n",inimigo->nome, dano);
-                    sleep(1);
+                    SLEEP(1000);
                     printf("Vida de %s restante: %d\n",jogador->usuario, jogador->vida);
                     salvar(jogador);
                     pausar();
                     limpar();
                 }
                 else if(dado >= 0 && dado < 4){
-                    sleep(1);
+                    SLEEP(1000);
                     printf("%s rolou um d20 e obteve: %d\n",inimigo->nome, dado);
-                    sleep(1);
+                    SLEEP(1000);
                     printf("Errou o ataque!\n");
-                    sleep(1);
+                    SLEEP(1000);
                     printf("Vida de %s restante: %d\n",jogador->usuario, jogador->vida);
                     salvar(jogador);
                     pausar();
                     limpar();                        
                 }
                 else{
-                    sleep(1);
+                    SLEEP(1000);
                     printf("%s rolou um d20 e obteve: %d\n",inimigo->nome, dado);
-                    sleep(1);
+                    SLEEP(1000);
                     printf("Dano commum!\n");
-                    sleep(1);
+                    SLEEP(1000);
                     jogador->vida -= inimigo->ataquefisico;
-                    sleep(1);
+                    SLEEP(1000);
                     printf("%s causou %d de dano.\n",inimigo->nome, inimigo->ataquefisico);
-                    sleep(1);
+                    SLEEP(1000);
                     printf("Vida de %s restante: %d\n",jogador->usuario, jogador->vida);
                     salvar(jogador);
                     pausar();
@@ -552,43 +564,43 @@ void combate(jogador *jogador, inimigo *inimigo) {
             } else {
                 srand(time(NULL));;
                 int dado = (rand() % 20) + 1;
-                sleep(1);
+                SLEEP(1000);
                 printf("%s atacou com um ataque especial\n", inimigo->nome);
                 if(dado >= 17){
-                    sleep(1);
+                    SLEEP(1000);
                     printf("%s rolou um d20 e obteve: %d\n",inimigo->nome, dado);
-                    sleep(1);
+                    SLEEP(1000);
                     printf("Acerto crítico!\n");
                     jogador->vida -= (inimigo->ataqueespecial) * 2;
                     dano = (inimigo->ataqueespecial) * 2;
-                    sleep(1);
+                    SLEEP(1000);
                     printf("%s causou %d de dano.\n",inimigo->nome, dano);
-                    sleep(1);
+                    SLEEP(1000);
                     printf("Vida de %s restante: %d\n",jogador->usuario, jogador->vida);
                     salvar(jogador);
                     pausar();
                     limpar();
                 }
                 else if(dado >= 0 && dado < 4){
-                    sleep(1);
+                    SLEEP(1000);
                     printf("%s rolou um d20 e obteve: %d\n",inimigo->nome, dado);
-                    sleep(1);
+                    SLEEP(1000);
                     printf("Errou o ataque!\n");
-                    sleep(1);
+                    SLEEP(1000);
                     printf("Vida de %s restante: %d\n",jogador->usuario, jogador->vida);   
                     salvar(jogador);
                     pausar();
                     limpar();                 
                 }
                 else{
-                    sleep(1);
+                    SLEEP(1000);
                     printf("%s rolou um d20 e obteve: %d\n",inimigo->nome, dado);
-                    sleep(1);
+                    SLEEP(1000);
                     printf("Dano commum!\n");
                     jogador->vida -= inimigo->ataqueespecial;
-                    sleep(1);
+                    SLEEP(1000);
                     printf("%s causou %d de dano.\n",inimigo->nome, inimigo->ataqueespecial);
-                    sleep(1);
+                    SLEEP(1000);
                     printf("Vida de %s restante: %d\n",jogador->usuario, jogador->vida); 
                     salvar(jogador);
                     pausar();
@@ -609,43 +621,43 @@ void combate(jogador *jogador, inimigo *inimigo) {
             if (atkinimigo == 0) {
                 srand(time(NULL));;
                 int dado = (rand() % 20) + 1;
-                sleep(1);
+                SLEEP(1000);
                 printf("%s atacou com um ataque físico\n", inimigo->nome);
                 if(dado >= 17){
-                    sleep(1);
+                    SLEEP(1000);
                     printf("%s rolou um d20 e obteve: %d\n",inimigo->nome, dado);
-                    sleep(1);
+                    SLEEP(1000);
                     printf("Acerto crítico!\n");
                     jogador->vida -= (inimigo->ataquefisico) * 2;
                     dano = (inimigo->ataquefisico) * 2;
-                    sleep(1);
+                    SLEEP(1000);
                     printf("%s causou %d de dano.\n",inimigo->nome, dano);
-                    sleep(1);
+                    SLEEP(1000);
                     printf("Vida de %s restante: %d\n",jogador->usuario, jogador->vida);
                     salvar(jogador);
                     pausar();
                     limpar();
                 }
                 else if(dado >= 0 && dado < 4){
-                    sleep(1);
+                    SLEEP(1000);
                     printf("%s rolou um d20 e obteve: %d\n",inimigo->nome, dado);
-                    sleep(1);
+                    SLEEP(1000);
                     printf("Errou o ataque!\n");
-                    sleep(1);
+                    SLEEP(1000);
                     printf("Vida de %s restante: %d\n",jogador->usuario, jogador->vida); 
                     salvar(jogador);
                     pausar();
                     limpar();
                 }
                 else{
-                    sleep(1);
+                    SLEEP(1000);
                     printf("%s rolou um d20 e obteve: %d\n",inimigo->nome, dado);
-                    sleep(1);
+                    SLEEP(1000);
                     printf("Dano commum!\n");
                     jogador->vida -= inimigo->ataquefisico;
-                    sleep(1);
+                    SLEEP(1000);
                     printf("%s causou %d de dano.\n",inimigo->nome, inimigo->ataqueespecial);
-                    sleep(1);
+                    SLEEP(1000);
                     printf("Vida de %s restante: %d\n",jogador->usuario, jogador->vida);
                     salvar(jogador);
                     pausar();
@@ -654,43 +666,43 @@ void combate(jogador *jogador, inimigo *inimigo) {
             } else {
                 srand(time(NULL));
                 int dado = (rand() % 20) + 1;
-                sleep(1);
+                SLEEP(1000);
                 printf("%s atacou com um ataque especial\n", inimigo->nome);
                 if(dado >= 17){
-                    sleep(1);
+                    SLEEP(1000);
                     printf("%s rolou um d20 e obteve: %d\n",inimigo->nome, dado);
-                    sleep(1);
+                    SLEEP(1000);
                     printf("Acerto crítico!\n");
                     jogador->vida -= (inimigo->ataqueespecial) * 2;
                     dano = (inimigo->ataqueespecial) * 2;
-                    sleep(1);
+                    SLEEP(1000);
                     printf("%s causou %d de dano.\n",inimigo->nome, dano);
-                    sleep(1);
+                    SLEEP(1000);
                     printf("Vida de %s restante: %d\n",jogador->usuario, jogador->vida);
                     salvar(jogador);
                     pausar();
                     limpar();
                 }
                 else if(dado >= 0 && dado < 4){
-                    sleep(1);
+                    SLEEP(1000);
                     printf("%s rolou um d20 e obteve: %d\n",inimigo->nome, dado);
-                    sleep(1);
+                    SLEEP(1000);
                     printf("Errou o ataque!\n");
-                    sleep(1);
+                    SLEEP(1000);
                     printf("Vida de %s restante: %d\n",jogador->usuario, jogador->vida);   
                     salvar(jogador);
                     pausar();
                     limpar();                  
                 }
                 else{
-                    sleep(1);
+                    SLEEP(1000);
                     printf("%s rolou um d20 e obteve: %d\n",inimigo->nome, dado);
-                    sleep(1);
+                    SLEEP(1000);
                     printf("Dano commum!\n");
                     jogador->vida -= inimigo->ataqueespecial;
-                    sleep(1);
+                    SLEEP(1000);
                     printf("%s causou %d de dano.\n",inimigo->nome, inimigo->ataqueespecial);
-                    sleep(1);
+                    SLEEP(1000);
                     printf("Vida de %s restante: %d\n",jogador->usuario, jogador->vida);
                     salvar(jogador);
                     pausar();
@@ -706,52 +718,52 @@ void combate(jogador *jogador, inimigo *inimigo) {
                 break;
             }
 
-            sleep(1);
+            SLEEP(1000);
             printf("Vez de %s\n", jogador->usuario);
-            sleep(1);
+            SLEEP(1000);
             printf("1 - Ataque físico\n2 - Ataque especial\n");
             scanf("%d", &opcatk);
 
             if (opcatk == 1) {
                 srand(time(NULL));;
                 int dado = (rand() % 20) + 1;
-                sleep(1);
+                SLEEP(1000);
                 printf("%s ataca com um ataque físico.\n", jogador->usuario);
                 if (jogador->forca >= inimigo->forca) {
                     if(dado >= 17){
-                        sleep(1);
+                        SLEEP(1000);
                         printf("Você rolou um d20 e obteve: %d\n", dado);
-                        sleep(1);
+                        SLEEP(1000);
                         printf("Acerto crítico!\n");
                         dano = ((jogador->forca / 10) * jogador->ataquefisico) * 2;
                         inimigo->vida -= dano;
-                        sleep(1);
+                        SLEEP(1000);
                         printf("%s causou %d de dano.\n",jogador->usuario, dano);
-                        sleep(1);
+                        SLEEP(1000);
                         printf("Vida de %s restante: %d\n",inimigo->nome, inimigo->vida);
                         salvar(jogador);
                         pausar();
                         limpar();
                     }
                     else if(dado >= 0 && dado < 4){
-                        sleep(1);
+                        SLEEP(1000);
                         printf("Você rolou um d20 e obteve: %d\n", dado);
-                        sleep(1);
+                        SLEEP(1000);
                         printf("Errou o ataque!\n");      
                         salvar(jogador);
                         pausar();
                         limpar();                  
                     }
                     else{
-                        sleep(1);
+                        SLEEP(1000);
                         printf("Você rolou um d20 e obteve: %d\n", dado);
-                        sleep(1);
+                        SLEEP(1000);
                         printf("Dano comum!\n");  
                         dano = (jogador->forca / 10) * jogador->ataquefisico;
                         inimigo->vida -= dano;
-                        sleep(1);
+                        SLEEP(1000);
                         printf("%s causou %d de dano.\n",jogador->usuario, dano);
-                        sleep(1);
+                        SLEEP(1000);
                         printf("Vida de %s restante: %d\n",inimigo->nome, inimigo->vida);
                         salvar(jogador);
                         pausar();
@@ -759,41 +771,41 @@ void combate(jogador *jogador, inimigo *inimigo) {
                     }
                 } else {
                     if(dado >=17){
-                        sleep(1);
+                        SLEEP(1000);
                        printf("Você rolou um d20 e obteve: %d\n", dado);
-                       sleep(1);
+                       SLEEP(1000);
                        printf("Acerto crítico!\n");
                        dano = jogador->ataquefisico * 2;
                        inimigo->vida -= jogador->ataquefisico * 2; 
-                       sleep(1);
+                       SLEEP(1000);
                        printf("%s causou %d de dano.\n",jogador->usuario, dano);
-                       sleep(1);
+                       SLEEP(1000);
                        printf("Vida de %s restante: %d\n",inimigo->nome, inimigo->vida);
                        salvar(jogador);
                        pausar();
                        limpar();
                     }
                     else if(dado >= 0 && dado < 4){
-                        sleep(1);
+                        SLEEP(1000);
                         printf("Você rolou um d20 e obteve: %d\n", dado);
-                        sleep(1);
+                        SLEEP(1000);
                         printf("Errou o ataque!\n");
-                        sleep(1);
+                        SLEEP(1000);
                         printf("Vida de %s restante: %d\n",inimigo->nome, inimigo->vida);
                         salvar(jogador);
                         pausar();
                         limpar();
                     }
                     else{
-                        sleep(1);
+                        SLEEP(1000);
                         printf("Você rolou um d20 e obteve: %d\n", dado);
-                        sleep(1);
+                        SLEEP(1000);
                         printf("Dano comum!\n");
                         inimigo->vida -= jogador->ataquefisico;
-                        sleep(1);
+                        SLEEP(1000);
                         printf("%s causou %d de dano.\n",jogador->usuario, jogador->ataquefisico);
                         salvar(jogador);
-                        sleep(1);
+                        SLEEP(1000);
                         printf("Vida de %s restante: %d\n",inimigo->nome, inimigo->vida);
                         pausar();
                         limpar();
@@ -802,46 +814,46 @@ void combate(jogador *jogador, inimigo *inimigo) {
             } else if (opcatk == 2) {
                 srand(time(NULL));;
                 int dado = (rand() % 20) + 1;
-                sleep(1);
+                SLEEP(1000);
                 printf("%s ataca com um ataque especial.\n", jogador->usuario);
                 if (jogador->inteligencia > inimigo->inteligencia) {
                     if(dado >= 17){
-                        sleep(1);
+                        SLEEP(1000);
                         printf("Você rolou um d20 e obteve: %d\n", dado);
-                        sleep(1);
+                        SLEEP(1000);
                         printf("Acerto crítico!\n");
                         dano = ((jogador->inteligencia / 10) * jogador->ataqueespecial) * 2;
                         inimigo->vida -= dano;
-                        sleep(1);
+                        SLEEP(1000);
                         printf("%s causou %d de dano.\n",jogador->usuario, dano);
-                        sleep(1);
+                        SLEEP(1000);
                         printf("Vida de %s restante: %d\n",inimigo->nome, inimigo->vida);
                         salvar(jogador);
                         pausar();
                         limpar();
                     }
                     else if(dado >= 0 && dado < 4){
-                        sleep(1);
+                        SLEEP(1000);
                         printf("Você rolou um d20 e obteve: %d\n", dado);
-                        sleep(1);
+                        SLEEP(1000);
                         printf("Errou o ataque!\n");
-                        sleep(1);
+                        SLEEP(1000);
                         printf("Vida de %s restante: %d\n",inimigo->nome, inimigo->vida);  
                         salvar(jogador);
                         pausar();
                         limpar();                     
                     }
                     else{
-                        sleep(1);
+                        SLEEP(1000);
                         printf("Você rolou um d20 e obteve: %d\n", dado);
-                        sleep(1);
+                        SLEEP(1000);
                         printf("Dano comum!\n");
-                        sleep(1);
+                        SLEEP(1000);
                         dano = (jogador->inteligencia / 10) * jogador->ataqueespecial;
                         inimigo->vida -= dano;
-                        sleep(1);
+                        SLEEP(1000);
                         printf("%s causou %d de dano.\n",jogador->usuario, dano);
-                        sleep(1);
+                        SLEEP(1000);
                         printf("Vida de %s restante: %d\n",inimigo->nome, inimigo->vida); 
                         salvar(jogador);
                         pausar();
@@ -849,38 +861,38 @@ void combate(jogador *jogador, inimigo *inimigo) {
                     }
                 } else {
                     if(dado >= 17){
-                        sleep(1);
+                        SLEEP(1000);
                         printf("Você rolou um d20 e obteve: %d\n", dado);
-                        sleep(1);
+                        SLEEP(1000);
                         printf("Acerto crítico!\n"); 
                         dano = jogador->ataqueespecial * 2;
                         inimigo->vida -= jogador->ataqueespecial * 2;
-                        sleep(1);
+                        SLEEP(1000);
                         printf("%s causou %d de dano.\n",jogador->usuario, dano);   
                         salvar(jogador);
                         pausar();
                         limpar();                    
                     }
                     else if(dado >= 0 && dado < 4){
-                        sleep(1);                        
+                        SLEEP(1000);                        
                         printf("Você rolou um d20 e obteve: %d\n", dado);
-                        sleep(1);
+                        SLEEP(1000);
                         printf("Errou o ataque!\n");
-                        sleep(1);
+                        SLEEP(1000);
                         printf("Vida de %s restante: %d\n",inimigo->nome, inimigo->vida); 
                         salvar(jogador);
                         pausar();
                         limpar();                       
                     }
                     else{
-                        sleep(1);
+                        SLEEP(1000);
                         printf("Você rolou um d20 e obteve: %d\n", dado);
-                        sleep(1);
+                        SLEEP(1000);
                         printf("Dano comum!\n");                       
                         inimigo->vida -= jogador->ataqueespecial;
-                        sleep(1);
+                        SLEEP(1000);
                         printf("%s causou %d de dano.\n",jogador->usuario, jogador->ataqueespecial);
-                        sleep(1);
+                        SLEEP(1000);
                         printf("Vida de %s restante: %d\n",inimigo->nome, inimigo->vida); 
                         salvar(jogador);
                         pausar();
@@ -977,9 +989,9 @@ void cura(jogador *jogador){
         if(jogador->vida > jogador->vida_maxima){
             jogador->vida = jogador->vida_maxima;
         }
-        sleep(1);
+        SLEEP(1000);
         printf("Você usou um frasco de cura!\n");
-        sleep(1);
+        SLEEP(1000);
         printf("Vida de %s restante: %d\n",jogador->usuario, jogador->vida);
         pausar();
         limpar();
