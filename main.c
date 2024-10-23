@@ -18,6 +18,7 @@ typedef struct {
     int agilidade;
     int ataquefisico;
     int ataqueespecial;
+    int fase;
 } jogador;
 
 typedef struct {
@@ -33,9 +34,10 @@ typedef struct {
 int cadastro();
 int login();
 void combate(jogador *jogador, inimigo *inimigo);
-void testecombate(jogador *jogador);
+void salvar(jogador *jogador);
+int carregar(jogador *jogador);
 void cura(jogador *jogador);
-int fase1(jogador *jogador, inimigo *inimigo);
+int fase1(jogador *jogador);
 int fase2(jogador *jogador, inimigo *inimigo);
 int fase3(jogador *jogador, inimigo *inimigo);
 int fase4(jogador *jogador, inimigo *inimigo);
@@ -112,6 +114,7 @@ int cadastro(){
                 novojogador.ataquefisico = 20;
                 novojogador.ataqueespecial = 10;
                 novojogador.frascoscura = 5;
+                novojogador.fase = 1;
                 strcpy(novojogador.classe, "guerreiro");
                 printf("Seja bem vindo, guerreiro %s\n", novojogador.usuario);
                 pausar();
@@ -140,6 +143,7 @@ int cadastro(){
                 novojogador.ataquefisico = 10;
                 novojogador.ataqueespecial = 20;
                 novojogador.frascoscura = 5;
+                novojogador.fase = 1;
                 strcpy(novojogador.classe, "mago");
                 printf("Seja bem vindo, mago %s\n", novojogador.usuario);
                 pausar();
@@ -168,6 +172,7 @@ int cadastro(){
                 novojogador.ataquefisico = 15;
                 novojogador.ataqueespecial = 15;
                 novojogador.frascoscura = 5;
+                novojogador.fase = 1;
                 strcpy(novojogador.classe, "druida");
                 printf("Seja bem vindo, druida %s\n", novojogador.usuario);  
                 pausar();
@@ -195,6 +200,7 @@ int cadastro(){
                 novojogador.ataquefisico = 15;
                 novojogador.ataqueespecial = 15;
                 novojogador.frascoscura = 5;
+                novojogador.fase = 1;
                 strcpy(novojogador.classe, "ninja");
                 printf("Seja bem vindo, ninja %s\n", novojogador.usuario);
                 pausar();
@@ -207,7 +213,12 @@ int cadastro(){
                 limpar();
             }
         }
+
+        return 1;
+
     }
+
+    salvar(&novojogador);
 
     FILE *arquivo = fopen("jogadores.bin", "ab");
 
@@ -241,7 +252,36 @@ int login(){
             pausar();
             limpar();
             encontrado = 1;
-            testecombate(&jogadoratual);
+            
+            if(carregar(&jogadoratual)){
+                printf("Progresso carregado. Você está na fase %d.\n", jogadoratual.fase);
+                pausar();
+                limpar();
+
+                switch(jogadoratual.fase){
+                    case 1:
+                        fase1(&jogadoratual);
+                        break;
+                    case 2:
+                        fase2(&jogadoratual, NULL);
+                        break;
+                    case 3:
+                        fase3(&jogadoratual, NULL);
+                        break;
+                    case 4:
+                        fase3(&jogadoratual, NULL);
+                        break;
+                    case 5:
+                        fase3(&jogadoratual, NULL);
+                        break;
+                    case 6:
+                        fase3(&jogadoratual, NULL);
+                        break;
+                    default:
+                        printf("Erro!\n");
+                        break;                    
+                }
+            }
         }
     }
 
@@ -289,6 +329,7 @@ void combate(jogador *jogador, inimigo *inimigo) {
                         printf("%s causou %d de dano.\n",jogador->usuario, dano);
                         sleep(1);
                         printf("Vida de %s restante: %d\n",inimigo->nome, inimigo->vida);
+                        salvar(jogador);
                         pausar();
                         limpar();
                     }
@@ -297,6 +338,7 @@ void combate(jogador *jogador, inimigo *inimigo) {
                         printf("Você rolou um d20 e obteve: %d\n", dado);
                         sleep(1);
                         printf("Errou o ataque!\n"); 
+                        salvar(jogador);
                         pausar();
                         limpar();                       
                     }
@@ -311,6 +353,7 @@ void combate(jogador *jogador, inimigo *inimigo) {
                         printf("%s causou %d de dano.\n",jogador->usuario, dano);
                         sleep(1);
                         printf("Vida de %s restante: %d\n",inimigo->nome, inimigo->vida);
+                        salvar(jogador);
                         pausar();
                         limpar();
                     }
@@ -326,6 +369,7 @@ void combate(jogador *jogador, inimigo *inimigo) {
                         printf("%s causou %d de dano.\n",jogador->usuario, dano);
                         sleep(1);
                         printf("Vida de %s restante: %d\n",inimigo->nome, inimigo->vida);
+                        salvar(jogador);
                         pausar();
                         limpar();
                     }
@@ -336,6 +380,7 @@ void combate(jogador *jogador, inimigo *inimigo) {
                         printf("Errou o ataque!\n");
                         sleep(1);
                         printf("Vida de %s restante: %d\n",inimigo->nome, inimigo->vida);
+                        salvar(jogador);
                         pausar();
                         limpar();
                     }
@@ -349,6 +394,7 @@ void combate(jogador *jogador, inimigo *inimigo) {
                         printf("%s causou %d de dano.\n",jogador->usuario, jogador->ataquefisico);
                         sleep(1);
                         printf("Vida de %s restante: %d\n",inimigo->nome, inimigo->vida);
+                        salvar(jogador);
                         pausar();
                         limpar();
                     }
@@ -370,6 +416,7 @@ void combate(jogador *jogador, inimigo *inimigo) {
                         printf("%s causou %d de dano.\n",jogador->usuario, dano);
                         sleep(1);
                         printf("Vida de %s restante: %d\n",inimigo->nome, inimigo->vida);
+                        salvar(jogador);
                         pausar();
                         limpar();
                     }
@@ -380,6 +427,7 @@ void combate(jogador *jogador, inimigo *inimigo) {
                         printf("Errou o ataque!\n");
                         sleep(1);
                         printf("Vida de %s restante: %d\n",inimigo->nome, inimigo->vida);
+                        salvar(jogador);
                         pausar();
                         limpar();                       
                     }
@@ -394,6 +442,7 @@ void combate(jogador *jogador, inimigo *inimigo) {
                         printf("%s causou %d de dano.\n",jogador->usuario, dano);
                         sleep(1);
                         printf("Vida de %s restante: %d\n",inimigo->nome, inimigo->vida); 
+                        salvar(jogador);
                         pausar();
                         limpar();
                     }
@@ -406,7 +455,8 @@ void combate(jogador *jogador, inimigo *inimigo) {
                         dano = jogador->ataqueespecial * 2;
                         inimigo->vida -= jogador->ataqueespecial * 2;
                         sleep(1);
-                        printf("%s causou %d de dano.\n",jogador->usuario, dano);        
+                        printf("%s causou %d de dano.\n",jogador->usuario, dano); 
+                        salvar(jogador);       
                         pausar();
                         limpar();               
                     }
@@ -416,7 +466,8 @@ void combate(jogador *jogador, inimigo *inimigo) {
                         sleep(1);
                         printf("Errou o ataque!\n");
                         sleep(1);
-                        printf("Vida de %s restante: %d\n",inimigo->nome, inimigo->vida);            
+                        printf("Vida de %s restante: %d\n",inimigo->nome, inimigo->vida);    
+                        salvar(jogador);        
                         pausar();
                         limpar();            
                     }
@@ -428,6 +479,7 @@ void combate(jogador *jogador, inimigo *inimigo) {
                         inimigo->vida -= jogador->ataqueespecial;
                         sleep(1);
                         printf("%s causou %d de dano.\n",jogador->usuario, jogador->ataqueespecial);
+                        salvar(jogador);
                         sleep(1);
                         printf("Vida de %s restante: %d\n",inimigo->nome, inimigo->vida); 
                         pausar();
@@ -437,10 +489,12 @@ void combate(jogador *jogador, inimigo *inimigo) {
             }
             else if(opcatk == 3){
                 cura(jogador);
+                salvar(jogador);
             }
 
             if (inimigo->vida <= 0) {
                 printf("%s foi derrotado!\n", inimigo->nome);
+                salvar(jogador);
                 pausar();
                 limpar();
                 break;
@@ -465,6 +519,7 @@ void combate(jogador *jogador, inimigo *inimigo) {
                     printf("%s causou %d de dano.\n",inimigo->nome, dano);
                     sleep(1);
                     printf("Vida de %s restante: %d\n",jogador->usuario, jogador->vida);
+                    salvar(jogador);
                     pausar();
                     limpar();
                 }
@@ -475,6 +530,7 @@ void combate(jogador *jogador, inimigo *inimigo) {
                     printf("Errou o ataque!\n");
                     sleep(1);
                     printf("Vida de %s restante: %d\n",jogador->usuario, jogador->vida);
+                    salvar(jogador);
                     pausar();
                     limpar();                        
                 }
@@ -489,6 +545,7 @@ void combate(jogador *jogador, inimigo *inimigo) {
                     printf("%s causou %d de dano.\n",inimigo->nome, inimigo->ataquefisico);
                     sleep(1);
                     printf("Vida de %s restante: %d\n",jogador->usuario, jogador->vida);
+                    salvar(jogador);
                     pausar();
                     limpar();
                 }
@@ -508,6 +565,7 @@ void combate(jogador *jogador, inimigo *inimigo) {
                     printf("%s causou %d de dano.\n",inimigo->nome, dano);
                     sleep(1);
                     printf("Vida de %s restante: %d\n",jogador->usuario, jogador->vida);
+                    salvar(jogador);
                     pausar();
                     limpar();
                 }
@@ -518,6 +576,7 @@ void combate(jogador *jogador, inimigo *inimigo) {
                     printf("Errou o ataque!\n");
                     sleep(1);
                     printf("Vida de %s restante: %d\n",jogador->usuario, jogador->vida);   
+                    salvar(jogador);
                     pausar();
                     limpar();                 
                 }
@@ -531,12 +590,14 @@ void combate(jogador *jogador, inimigo *inimigo) {
                     printf("%s causou %d de dano.\n",inimigo->nome, inimigo->ataqueespecial);
                     sleep(1);
                     printf("Vida de %s restante: %d\n",jogador->usuario, jogador->vida); 
+                    salvar(jogador);
                     pausar();
                     limpar();                  
                 }
             }
             if (jogador->vida <= 0) {
                 printf("Você foi derrotado!\n");
+                salvar(jogador);
                 pausar();
                 limpar();
                 break;
@@ -561,6 +622,7 @@ void combate(jogador *jogador, inimigo *inimigo) {
                     printf("%s causou %d de dano.\n",inimigo->nome, dano);
                     sleep(1);
                     printf("Vida de %s restante: %d\n",jogador->usuario, jogador->vida);
+                    salvar(jogador);
                     pausar();
                     limpar();
                 }
@@ -571,6 +633,7 @@ void combate(jogador *jogador, inimigo *inimigo) {
                     printf("Errou o ataque!\n");
                     sleep(1);
                     printf("Vida de %s restante: %d\n",jogador->usuario, jogador->vida); 
+                    salvar(jogador);
                     pausar();
                     limpar();
                 }
@@ -584,6 +647,7 @@ void combate(jogador *jogador, inimigo *inimigo) {
                     printf("%s causou %d de dano.\n",inimigo->nome, inimigo->ataqueespecial);
                     sleep(1);
                     printf("Vida de %s restante: %d\n",jogador->usuario, jogador->vida);
+                    salvar(jogador);
                     pausar();
                     limpar();
                 }
@@ -603,6 +667,7 @@ void combate(jogador *jogador, inimigo *inimigo) {
                     printf("%s causou %d de dano.\n",inimigo->nome, dano);
                     sleep(1);
                     printf("Vida de %s restante: %d\n",jogador->usuario, jogador->vida);
+                    salvar(jogador);
                     pausar();
                     limpar();
                 }
@@ -613,6 +678,7 @@ void combate(jogador *jogador, inimigo *inimigo) {
                     printf("Errou o ataque!\n");
                     sleep(1);
                     printf("Vida de %s restante: %d\n",jogador->usuario, jogador->vida);   
+                    salvar(jogador);
                     pausar();
                     limpar();                  
                 }
@@ -626,6 +692,7 @@ void combate(jogador *jogador, inimigo *inimigo) {
                     printf("%s causou %d de dano.\n",inimigo->nome, inimigo->ataqueespecial);
                     sleep(1);
                     printf("Vida de %s restante: %d\n",jogador->usuario, jogador->vida);
+                    salvar(jogador);
                     pausar();
                     limpar();
                 }
@@ -633,6 +700,7 @@ void combate(jogador *jogador, inimigo *inimigo) {
 
             if (jogador->vida <= 0) {
                 printf("Você foi derrotado!\n");
+                salvar(jogador);
                 pausar();
                 limpar();
                 break;
@@ -661,6 +729,7 @@ void combate(jogador *jogador, inimigo *inimigo) {
                         printf("%s causou %d de dano.\n",jogador->usuario, dano);
                         sleep(1);
                         printf("Vida de %s restante: %d\n",inimigo->nome, inimigo->vida);
+                        salvar(jogador);
                         pausar();
                         limpar();
                     }
@@ -669,6 +738,7 @@ void combate(jogador *jogador, inimigo *inimigo) {
                         printf("Você rolou um d20 e obteve: %d\n", dado);
                         sleep(1);
                         printf("Errou o ataque!\n");      
+                        salvar(jogador);
                         pausar();
                         limpar();                  
                     }
@@ -683,6 +753,7 @@ void combate(jogador *jogador, inimigo *inimigo) {
                         printf("%s causou %d de dano.\n",jogador->usuario, dano);
                         sleep(1);
                         printf("Vida de %s restante: %d\n",inimigo->nome, inimigo->vida);
+                        salvar(jogador);
                         pausar();
                         limpar();
                     }
@@ -698,6 +769,7 @@ void combate(jogador *jogador, inimigo *inimigo) {
                        printf("%s causou %d de dano.\n",jogador->usuario, dano);
                        sleep(1);
                        printf("Vida de %s restante: %d\n",inimigo->nome, inimigo->vida);
+                       salvar(jogador);
                        pausar();
                        limpar();
                     }
@@ -708,6 +780,7 @@ void combate(jogador *jogador, inimigo *inimigo) {
                         printf("Errou o ataque!\n");
                         sleep(1);
                         printf("Vida de %s restante: %d\n",inimigo->nome, inimigo->vida);
+                        salvar(jogador);
                         pausar();
                         limpar();
                     }
@@ -719,6 +792,7 @@ void combate(jogador *jogador, inimigo *inimigo) {
                         inimigo->vida -= jogador->ataquefisico;
                         sleep(1);
                         printf("%s causou %d de dano.\n",jogador->usuario, jogador->ataquefisico);
+                        salvar(jogador);
                         sleep(1);
                         printf("Vida de %s restante: %d\n",inimigo->nome, inimigo->vida);
                         pausar();
@@ -742,6 +816,7 @@ void combate(jogador *jogador, inimigo *inimigo) {
                         printf("%s causou %d de dano.\n",jogador->usuario, dano);
                         sleep(1);
                         printf("Vida de %s restante: %d\n",inimigo->nome, inimigo->vida);
+                        salvar(jogador);
                         pausar();
                         limpar();
                     }
@@ -752,6 +827,7 @@ void combate(jogador *jogador, inimigo *inimigo) {
                         printf("Errou o ataque!\n");
                         sleep(1);
                         printf("Vida de %s restante: %d\n",inimigo->nome, inimigo->vida);  
+                        salvar(jogador);
                         pausar();
                         limpar();                     
                     }
@@ -767,6 +843,7 @@ void combate(jogador *jogador, inimigo *inimigo) {
                         printf("%s causou %d de dano.\n",jogador->usuario, dano);
                         sleep(1);
                         printf("Vida de %s restante: %d\n",inimigo->nome, inimigo->vida); 
+                        salvar(jogador);
                         pausar();
                         limpar();
                     }
@@ -780,6 +857,7 @@ void combate(jogador *jogador, inimigo *inimigo) {
                         inimigo->vida -= jogador->ataqueespecial * 2;
                         sleep(1);
                         printf("%s causou %d de dano.\n",jogador->usuario, dano);   
+                        salvar(jogador);
                         pausar();
                         limpar();                    
                     }
@@ -790,6 +868,7 @@ void combate(jogador *jogador, inimigo *inimigo) {
                         printf("Errou o ataque!\n");
                         sleep(1);
                         printf("Vida de %s restante: %d\n",inimigo->nome, inimigo->vida); 
+                        salvar(jogador);
                         pausar();
                         limpar();                       
                     }
@@ -803,6 +882,7 @@ void combate(jogador *jogador, inimigo *inimigo) {
                         printf("%s causou %d de dano.\n",jogador->usuario, jogador->ataqueespecial);
                         sleep(1);
                         printf("Vida de %s restante: %d\n",inimigo->nome, inimigo->vida); 
+                        salvar(jogador);
                         pausar();
                         limpar();
                     }
@@ -817,10 +897,15 @@ void combate(jogador *jogador, inimigo *inimigo) {
     }
 }
 
-void testecombate(jogador *jogador) {
+
+int fase1(jogador *jogador){
+    if(jogador->vida == 0){
+        jogador->vida = jogador->vida_maxima;
+    }
+    
     inimigo goblin;
     
-    // Definindo os atributos do inimigo da fase 1
+
     strcpy(goblin.nome, "Goblin");
     goblin.vida = 500;
     goblin.forca = 5;
@@ -830,38 +915,53 @@ void testecombate(jogador *jogador) {
     goblin.ataqueespecial = 5;
     
     printf("Você entrou na fase 1 e encontrou um %s!\n", goblin.nome);
+
     
-    // Chama a função de combate entre o jogador e o inimigo
+
     combate(jogador, &goblin);
 
     if (jogador->vida > 0) {
         printf("Você derrotou o %s e avançou para a próxima fase!\n", goblin.nome);
+        jogador->fase++;
+        salvar(jogador);
+
     } else {
         printf("Você foi derrotado e o jogo acabou.\n");
     }
 }
 
-int fase1(jogador *jogador, inimigo *inimigo){
-    return 1;
-}
-
 int fase2(jogador *jogador, inimigo *inimigo){
+    printf("Voce esta na fase 2\n");
+    jogador->fase++;
+    salvar(jogador);
     return 1;
 }
 
 int fase3(jogador *jogador, inimigo *inimigo){
+    printf("Voce esta na fase 3\n");
+    jogador->fase++;
+    salvar(jogador);
     return 1;
 }
 
 int fase4(jogador *jogador, inimigo *inimigo){
+    printf("Voce esta na fase 4\n");
+    jogador->fase++;
+    salvar(jogador);
     return 1;
 }
 
 int fase5(jogador *jogador, inimigo *inimigo){
+    printf("Voce esta na fase 5\n");
+    jogador->fase++;
+    salvar(jogador);
     return 1;
 }
 
 int fase6(jogador *jogador, inimigo *inimigo){
+    printf("Voce esta na fase 6\n");
+    jogador->fase++;
+    salvar(jogador);
     return 1;
 }
 
@@ -887,20 +987,76 @@ void cura(jogador *jogador){
 }
 
 
+void salvar(jogador *jogador) {
+    char filename[50];
+    sprintf(filename, "%s.txt", jogador->usuario);
+
+    FILE *file = fopen(filename, "w");
+    if (file == NULL) {
+        printf("Erro ao salvar o progresso.\n");
+        return;
+    }
+
+    fprintf(file, "%s\n", jogador->usuario);
+    fprintf(file, "%s\n", jogador->senha);
+    fprintf(file, "%s\n", jogador->classe);
+    fprintf(file, "%d\n", jogador->vida);
+    fprintf(file, "%d\n", jogador->vida_maxima);
+    fprintf(file, "%d\n", jogador->forca);
+    fprintf(file, "%d\n", jogador->inteligencia);
+    fprintf(file, "%d\n", jogador->agilidade);
+    fprintf(file, "%d\n", jogador->ataquefisico);
+    fprintf(file, "%d\n", jogador->ataqueespecial);
+    fprintf(file, "%d\n", jogador->frascoscura);
+    fprintf(file, "%d\n", jogador->fase);
+
+    fclose(file);
+}
+
+
+int carregar(jogador *jogador) {
+    char filename[50];
+    sprintf(filename, "%s.txt", jogador->usuario);
+
+    FILE *file = fopen(filename, "r");
+    if (file == NULL) {
+        printf("Progresso não encontrado para o jogador %s.\n", jogador->usuario);
+        return 0;
+    }
+
+    fscanf(file, "%s", jogador->usuario);
+    fscanf(file, "%s", jogador->senha);
+    fscanf(file, "%s", jogador->classe);
+    fscanf(file, "%d", &jogador->vida);
+    fscanf(file, "%d", &jogador->vida_maxima);
+    fscanf(file, "%d", &jogador->forca);
+    fscanf(file, "%d", &jogador->inteligencia);
+    fscanf(file, "%d", &jogador->agilidade);
+    fscanf(file, "%d", &jogador->ataquefisico);
+    fscanf(file, "%d", &jogador->ataqueespecial);
+    fscanf(file, "%d", &jogador->frascoscura);
+    fscanf(file, "%d", &jogador->fase);
+
+    fclose(file);
+    return 1;
+}
+
+
+
 void limpar() {
-    #ifdef _WIN32
+    #ifdef _WIN32   // pro windows
         system("cls");
     #else
-        system("clear");
+        system("clear");    // pro linux ou mac
     #endif
 }
 
 
 void pausar() {
     #ifdef _WIN32
-        system("pause");  // Para Windows
+        system("pause");  // pro windows
     #else
         printf("Pressione qualquer tecla para continuar...\n");
-        getchar();  // Para Linux/macOS
+        getchar();  // pro linux ou mac
     #endif
  }
