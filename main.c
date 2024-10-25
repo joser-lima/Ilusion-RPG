@@ -114,7 +114,7 @@ int cadastro(){
 
         if(opccharacter == 1){
             int confirm;
-            printf("Nascido no centro de Faramont, sempre dedicou sua vida inteira para o rei. Foi o guerreiro mais leal e guiou incontáveis exércitos para a vitória. Usando espada e escudo, é um mestre na arte de atacar e defender.\nVida: 120\nForca: 30\nInteligencia: 20\nAgilidade: 20\nAtaque físico: 20\nAtaque especial: 10\nFrascos de cura: 5\n");
+            printf("Um forte e corajoso lutador, que está sempre na linha de frente do combate preparado para resolver as coisas com suas próprias mãos.\nVida: 120\nForca: 30\nInteligencia: 20\nAgilidade: 20\nAtaque físico: 20\nAtaque especial: 10\nFrascos de cura: 5\n");
             printf("Deseja escolher a classe Guerreiro? 1 - Sim / 2 - Não \n");
             scanf("%d", &confirm);
             if(confirm == 1){
@@ -137,20 +137,21 @@ int cadastro(){
                 printf("Voltando... \n");
                 pausar();
                 limpar();
+                continue;
             }
 
         }
         else if(opccharacter == 2){
             int confirm;
-            printf("lore mago \n");
-            printf("Vida: 70\nForça: 5\nInteligencia: 50\nAgilidade: 25\nAtaque físico: 10\nAtaque especial: 20\nFrascos de cura: 5\n");
+            printf("Um poderoso e inteligente feiticeiro, que apesar de sua fragilidade compensa com sua magia extremamente poderosa capaz de destruir tudo pela sua frente.\n");
+            printf("Vida: 70\nForça: 5\nInteligencia: 40\nAgilidade: 25\nAtaque físico: 10\nAtaque especial: 20\nFrascos de cura: 5\n");
             printf("Deseja escolher a classe Mago? 1 - Sim / 2 - Não \n");
             scanf("%d", &confirm);
             if(confirm == 1){
                 novojogador.vida = 70;
                 novojogador.vida_maxima = 70;
                 novojogador.forca = 10;
-                novojogador.inteligencia = 50;
+                novojogador.inteligencia = 40;
                 novojogador.agilidade = 25;
                 novojogador.ataquefisico = 10;
                 novojogador.ataqueespecial = 20;
@@ -166,12 +167,13 @@ int cadastro(){
                 printf("Voltando...\n");
                 pausar();
                 limpar();
+                continue;
             }
 
         }
         else if(opccharacter == 3){
             int confirm;
-            printf("lore druida \n");
+            printf("Um equilíbrio entre todas as forças, resistente e veloz sendo altamente eficaz com quaisquer tipo de ataque, estando sempre preparado para qualquer combate.\n");
             printf("Vida: 100\nForça: 20\nInteligencia: 20\nAgilidade: 20\nAtaque físico: 15\nAtaque especial: 15\nFrascos de cura: 5\n");
             printf("Deseja escolher a classe Druida? 1 - Sim / 2 - Não \n");
             scanf("%d", &confirm);
@@ -195,11 +197,12 @@ int cadastro(){
                 printf("Voltando...\n");
                 pausar();
                 limpar();
+                continue;
             }   
         }
         else if(opccharacter == 4){
             int confirm;
-            printf("lore ninja \n");
+            printf("Se movimentando como um vulto suas habilidades vão muito além de sua agilidade, sendo capaz de atacar com suas mãos ou com magia, combinado com sua velocidade se torna uma arma letal.\n");
             printf("Vida: 90\nForça: 15\nInteligencia: 15\nAgilidade: 40\nAtaque físico: 15\nAtaque especial: 15\nFrascos de cura: 5\n");
             printf("Deseja escolher a classe Ninja? 1 - Sim / 2 - Não \n");
             scanf("%d", &confirm);
@@ -223,6 +226,7 @@ int cadastro(){
                 printf("Voltando...\n");
                 pausar();
                 limpar();
+                continue;
             }
         }
 
@@ -721,7 +725,7 @@ void combate(jogador *jogador, inimigo *inimigo) {
             SLEEP(1000);
             printf("Vez de %s\n", jogador->usuario);
             SLEEP(1000);
-            printf("1 - Ataque físico\n2 - Ataque especial\n");
+            printf("1 - Ataque físico\n2 - Ataque especial\n3 - Usar cura");
             scanf("%d", &opcatk);
 
             if (opcatk == 1) {
@@ -920,33 +924,91 @@ int fase1(jogador *jogador){
         jogador->frascoscura = 5;
     }
 
-
-    inimigo goblin;
+    inimigo inseto;
+    inimigo fantasma;
     
 
-    strcpy(goblin.nome, "Goblin");
-    goblin.vida = 50;
-    goblin.forca = 5;
-    goblin.inteligencia = 3;
-    goblin.agilidade = 7;
-    goblin.ataquefisico = 10;
-    goblin.ataqueespecial = 5;
-    
-    printf("Você entrou na fase 1 e encontrou um %s!\n", goblin.nome);
+    strcpy(inseto.nome, "Insetos");
+    inseto.vida = 100;
+    inseto.forca = 10;
+    inseto.inteligencia = 10;
+    inseto.agilidade = 5;
+    inseto.ataquefisico = 10;
+    inseto.ataqueespecial = 15;
+
+    strcpy(fantasma.nome, "Rigel");
+    fantasma.vida = 200;
+    fantasma.forca = 10;
+    fantasma.inteligencia = 10;
+    fantasma.agilidade = 35;
+    fantasma.ataquefisico = 20;
+    fantasma.ataqueespecial = 10;
 
     
+    printf("Você começa sua jornada saindo do vilarejo que sempre conheceu, e logo se depara com um enxame de insetos que se tornam seus adversários perfeitos para um primeiro combate.\n", inseto.nome);
+    pausar();
+    limpar();
+    
 
-    combate(jogador, &goblin);
+    combate(jogador, &inseto);
 
     if (jogador->vida > 0) {
-        printf("Você derrotou o %s e avançou para a próxima fase!\n", goblin.nome);
-        jogador->fase++;
-        salvar(jogador);
+        printf("Você derrotou os %s. Depois desse combate, você segue uma caminhada melancólica, perdida. Até encontrar um grupo de viajantes, que comentam sobre um monge que vive após o oceano, então é pra lá que deve seguir.\n", inseto.nome);
         pausar();
         limpar();
-        fase2(jogador);
 
-    } else {
+        printf("Ao encontrar a água, você se depara com um navio pirata abandonado, explorando o interior para seguir a viagem, %s, o capitão fantasma te surpreende com sua espada, e você não tem nenhuma outra opção além de um duelo.\n", fantasma.nome);
+        pausar();
+        limpar();
+        
+        combate(jogador, &fantasma);
+        if(jogador->vida > 0){
+            int respuser;
+            printf("%s foi derrotado.\nVocê ganhou uma melhoria para seus atributos. Escolha o atributo que deseja melhorar.\n1 - Vida\n2 - Força\n3 - Inteligencia\n4 - Agilidade\n", fantasma.nome);
+            scanf("%d", &respuser);
+            if(respuser == 1){
+                jogador->vida_maxima += 20;
+                printf("Você aumentou sua vida em 20 pontos\n");
+                jogador->fase++;
+                salvar(jogador);
+                pausar();
+                limpar();
+                fase2(jogador);
+            }
+            else if(respuser == 2){
+                jogador->ataquefisico += 5;
+                printf("Você aumentou seu ataque fisico em 5\n");
+                jogador->fase++;
+                salvar(jogador);
+                pausar();
+                limpar();
+                fase2(jogador);                
+            }
+            else if(respuser == 3){
+                jogador->ataqueespecial += 5;
+                printf("Você aumentou seu ataque especial em 5\n");
+                jogador->fase++;
+                salvar(jogador);
+                pausar();
+                limpar();
+                fase2(jogador);
+            }
+            else{
+                jogador->agilidade += 5;
+                printf("Você aumentou sua agilidade em 5\n");
+                jogador->fase++;
+                salvar(jogador);
+                pausar();
+                limpar();
+                fase2(jogador);                
+            }
+        }
+        else{
+            printf("Você foi derrotado e o jogo acabou.\n");
+        }
+
+    }
+    else {
         printf("Você foi derrotado e o jogo acabou.\n");
     }
 }
@@ -972,6 +1034,8 @@ int fase2(jogador *jogador){
     dragao.ataqueespecial = 500;
     
     printf("Você entrou na fase 2 e encontrou %s, o dragão ancião\n", dragao.nome);
+    pausar();
+    limpar();
     
 
     combate(jogador, &dragao);
