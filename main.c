@@ -50,11 +50,11 @@ void salvar(jogador *jogador);
 int carregar(jogador *jogador);
 void cura(jogador *jogador);
 int fase1(jogador *jogador);
-int fase2(jogador *jogador, inimigo *inimigo);
-int fase3(jogador *jogador, inimigo *inimigo);
-int fase4(jogador *jogador, inimigo *inimigo);
-int fase5(jogador *jogador, inimigo *inimigo);
-int fase6(jogador *jogador, inimigo *inimigo);
+int fase2(jogador *jogador);
+int fase3(jogador *jogador);
+int fase4(jogador *jogador);
+int fase5(jogador *jogador);
+int fase6(jogador *jogador);
 void limpar();
 void pausar();
 
@@ -275,19 +275,19 @@ int login(){
                         fase1(&jogadoratual);
                         break;
                     case 2:
-                        fase2(&jogadoratual, NULL);
+                        fase2(&jogadoratual);
                         break;
                     case 3:
-                        fase3(&jogadoratual, NULL);
+                        fase3(&jogadoratual);
                         break;
                     case 4:
-                        fase3(&jogadoratual, NULL);
+                        fase4(&jogadoratual);
                         break;
                     case 5:
-                        fase3(&jogadoratual, NULL);
+                        fase5(&jogadoratual);
                         break;
                     case 6:
-                        fase3(&jogadoratual, NULL);
+                        fase6(&jogadoratual);
                         break;
                     default:
                         printf("Erro!\n");
@@ -911,15 +911,21 @@ void combate(jogador *jogador, inimigo *inimigo) {
 
 
 int fase1(jogador *jogador){
-    if(jogador->vida == 0){
+    if(jogador->vida <= 0){
         jogador->vida = jogador->vida_maxima;
     }
     
+
+    if(jogador->frascoscura <= 0){
+        jogador->frascoscura = 5;
+    }
+
+
     inimigo goblin;
     
 
     strcpy(goblin.nome, "Goblin");
-    goblin.vida = 500;
+    goblin.vida = 50;
     goblin.forca = 5;
     goblin.inteligencia = 3;
     goblin.agilidade = 7;
@@ -936,41 +942,74 @@ int fase1(jogador *jogador){
         printf("Você derrotou o %s e avançou para a próxima fase!\n", goblin.nome);
         jogador->fase++;
         salvar(jogador);
+        pausar();
+        limpar();
+        fase2(jogador);
 
     } else {
         printf("Você foi derrotado e o jogo acabou.\n");
     }
 }
 
-int fase2(jogador *jogador, inimigo *inimigo){
-    printf("Voce esta na fase 2\n");
-    jogador->fase++;
-    salvar(jogador);
-    return 1;
+int fase2(jogador *jogador){
+    if(jogador->vida <= 0){
+        jogador->vida = jogador->vida_maxima;
+    }
+    
+    if(jogador->frascoscura <= 0){
+        jogador->frascoscura = 5;
+    }
+
+    inimigo dragao;
+    
+
+    strcpy(dragao.nome, "Mezmer");
+    dragao.vida = 200;
+    dragao.forca = 20;
+    dragao.inteligencia = 5;
+    dragao.agilidade = 10;
+    dragao.ataquefisico = 500;
+    dragao.ataqueespecial = 500;
+    
+    printf("Você entrou na fase 2 e encontrou %s, o dragão ancião\n", dragao.nome);
+    
+
+    combate(jogador, &dragao);
+
+    if (jogador->vida > 0) {
+        printf("Você derrotou %s e avançou para a próxima fase!\n", dragao.nome);
+        pausar();
+        limpar();
+        jogador->fase++;
+        salvar(jogador);
+
+    } else {
+        printf("Você foi derrotado e o jogo acabou.\n");
+    }
 }
 
-int fase3(jogador *jogador, inimigo *inimigo){
+int fase3(jogador *jogador){
     printf("Voce esta na fase 3\n");
     jogador->fase++;
     salvar(jogador);
     return 1;
 }
 
-int fase4(jogador *jogador, inimigo *inimigo){
+int fase4(jogador *jogador){
     printf("Voce esta na fase 4\n");
     jogador->fase++;
     salvar(jogador);
     return 1;
 }
 
-int fase5(jogador *jogador, inimigo *inimigo){
+int fase5(jogador *jogador){
     printf("Voce esta na fase 5\n");
     jogador->fase++;
     salvar(jogador);
     return 1;
 }
 
-int fase6(jogador *jogador, inimigo *inimigo){
+int fase6(jogador *jogador){
     printf("Voce esta na fase 6\n");
     jogador->fase++;
     salvar(jogador);
