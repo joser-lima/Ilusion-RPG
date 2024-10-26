@@ -920,10 +920,6 @@ int fase1(jogador *jogador){
     }
     
 
-    if(jogador->frascoscura <= 0){
-        jogador->frascoscura = 5;
-    }
-
     inimigo inseto;
     inimigo fantasma;
     
@@ -1018,9 +1014,6 @@ int fase2(jogador *jogador){
         jogador->vida = jogador->vida_maxima;
     }
     
-    if(jogador->frascoscura <= 0){
-        jogador->frascoscura = 5;
-    }
 
     printf("Continuando a aventura, você segue pelo, a princípio, calmo mar e aproveita para fazer uma pescaria, depois de muita calma e espera você consegue um bau de tesouro, dentro dele tem 3 poções de cura!\n");
     jogador->frascoscura += 3;
@@ -1134,9 +1127,6 @@ int fase3(jogador *jogador){
         jogador->vida = jogador->vida_maxima;
     }
     
-    if(jogador->frascoscura <= 0){
-        jogador->frascoscura = 5;
-    }
 
     
     inimigo boneco;
@@ -1300,7 +1290,79 @@ int fase3(jogador *jogador){
 }
 
 int fase4(jogador *jogador){
-    printf("Voce esta na fase 4\n");
+    if(jogador->vida <= 0){
+        jogador->vida = jogador->vida_maxima;
+    }
+    
+
+    
+    inimigo grifo;
+    strcpy(grifo.nome, "Grifo");
+    grifo.vida = 300;
+    grifo.forca = 25;
+    grifo.inteligencia = 5;
+    grifo.agilidade = 10;
+    grifo.ataquefisico = 40;
+    grifo.ataqueespecial = 20;
+    
+    inimigo medusa;
+    strcpy(medusa.nome, "Medusa");
+    medusa.vida = 400;
+    medusa.forca = 25;
+    medusa.inteligencia = 5;
+    medusa.agilidade = 20;
+    medusa.ataquefisico = 20;
+    medusa.ataqueespecial = 50;
+
+    inimigo hydra;
+    strcpy(hydra.nome, "Hydra");
+    hydra.vida = 500;
+    hydra.forca = 25;
+    hydra.inteligencia = 5;
+    hydra.agilidade = 25;
+    hydra.ataquefisico = 40;
+    hydra.ataqueespecial = 40;
+
+    printf("Ao chegar no pé da montanha você se depara com uma íngreme subida, e logo se apresenta seu primeiro inimigo, um majestoso Grifo.\n");
+    pausar();
+    limpar();
+    combate(jogador, &grifo);
+
+    if(jogador->vida > 0){
+        printf("Com dificuldades você continua subindo, até encontrar Medusa que quer impedir sua chegada ao topo.\n");
+        pausar();
+        limpar();
+        combate(jogador, &medusa);
+
+        if(jogador->vida > 0){
+            printf("Finalmente você chega em um lugar plano para descansar, mas antes disso tem uma Hydra que precisa derrotar para conquistar esse local.\n");
+            pausar();
+            limpar();
+            combate(jogador, &hydra);
+
+            if(jogador->vida > 0){
+                printf("Vasculhando o lugar você encontra uma mochila com 5 poções de cura, as quais eram de outro aventureiro que tentou desbancar Surtur e não teve tanta sorte.\n");
+                pausar();
+                limpar();
+                jogador->frascoscura += 5;
+                jogador->vida = jogador->vida_maxima;
+                jogador->fase++;
+                salvar(jogador);
+                fase5(jogador);
+            }
+            else{
+                printf("Você foi derrotado e o jogo acabou.\n");
+            }
+        }
+        else{
+            printf("Você foi derrotado e o jogo acabou.\n");
+        }
+    }
+    else{
+        printf("Você foi derrotado e o jogo acabou.\n");
+    }
+
+
     jogador->fase++;
     salvar(jogador);
     return 1;
