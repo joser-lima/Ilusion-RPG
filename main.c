@@ -54,7 +54,7 @@ int fase2(jogador *jogador);
 int fase3(jogador *jogador);
 int fase4(jogador *jogador);
 int fase5(jogador *jogador);
-int fase6(jogador *jogador);
+int creditos(jogador *jogador);
 void limpar();
 void pausar();
 
@@ -291,7 +291,7 @@ int login(){
                         fase5(&jogadoratual);
                         break;
                     default:
-                        printf("Erro!\n");
+                        creditos(&jogadoratual);
                         break;                    
                 }
             }
@@ -1455,12 +1455,15 @@ int fase5(jogador *jogador){
         printf("Você foi derrotado e o jogo acabou.\n");
     }
 
-
-    jogador->fase++;
-    salvar(jogador);
     return 1;
 }
 
+int creditos(jogador *jogador){
+    printf("Obrigado por jogar!\n");
+    printf("Creditos: \nJosé Reginaldo de Lima Junior\nGabriel Oliveira Alves de Sá\n");
+    pausar();
+    limpar();
+}
 
 void cura(jogador *jogador){
     if(jogador->frascoscura <= 0){
