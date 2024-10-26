@@ -725,7 +725,7 @@ void combate(jogador *jogador, inimigo *inimigo) {
             SLEEP(1000);
             printf("Vez de %s\n", jogador->usuario);
             SLEEP(1000);
-            printf("1 - Ataque físico\n2 - Ataque especial\n3 - Usar cura");
+            printf("1 - Ataque físico\n2 - Ataque especial\n3 - Usar cura\n");
             scanf("%d", &opcatk);
 
             if (opcatk == 1) {
@@ -928,7 +928,7 @@ int fase1(jogador *jogador){
     inimigo fantasma;
     
 
-    strcpy(inseto.nome, "Insetos");
+    strcpy(inseto.nome, "Inseto");
     inseto.vida = 100;
     inseto.forca = 10;
     inseto.inteligencia = 10;
@@ -953,7 +953,7 @@ int fase1(jogador *jogador){
     combate(jogador, &inseto);
 
     if (jogador->vida > 0) {
-        printf("Você derrotou os %s. Depois desse combate, você segue uma caminhada melancólica, perdida. Até encontrar um grupo de viajantes, que comentam sobre um monge que vive após o oceano, então é pra lá que deve seguir.\n", inseto.nome);
+        printf("Você derrotou os insetos. Depois desse combate, você segue uma caminhada melancólica, perdida. Até encontrar um grupo de viajantes, que comentam sobre um monge que vive após o oceano, então é pra lá que deve seguir.\n");
         pausar();
         limpar();
 
@@ -1022,30 +1022,106 @@ int fase2(jogador *jogador){
         jogador->frascoscura = 5;
     }
 
-    inimigo dragao;
-    
-
-    strcpy(dragao.nome, "Mezmer");
-    dragao.vida = 200;
-    dragao.forca = 20;
-    dragao.inteligencia = 5;
-    dragao.agilidade = 10;
-    dragao.ataquefisico = 500;
-    dragao.ataqueespecial = 500;
-    
-    printf("Você entrou na fase 2 e encontrou %s, o dragão ancião\n", dragao.nome);
+    printf("Continuando a aventura, você segue pelo, a princípio, calmo mar e aproveita para fazer uma pescaria, depois de muita calma e espera você consegue um bau de tesouro, dentro dele tem 3 poções de cura!\n");
+    jogador->frascoscura += 3;
     pausar();
     limpar();
     
+    printf("Mais a frente o tempo vira, e dá início uma grande tempestade. Em meio a ondas gigantes você encontra outro navio pirata, que também quer sua cabeça.\n");
+    pausar();
+    limpar();
 
-    combate(jogador, &dragao);
+    inimigo pirata;
+    strcpy(pirata.nome, "Pirata");
+    pirata.vida = 150;
+    pirata.forca = 25;
+    pirata.inteligencia = 5;
+    pirata.agilidade = 10;
+    pirata.ataquefisico = 25;
+    pirata.ataqueespecial = 10;
+    
+    inimigo sereia;
+    strcpy(sereia.nome, "Sereia");
+    sereia.vida = 140;
+    sereia.forca = 25;
+    sereia.inteligencia = 5;
+    sereia.agilidade = 20;
+    sereia.ataquefisico = 10;
+    sereia.ataqueespecial = 30;
+
+    inimigo kraken;
+    strcpy(kraken.nome, "Kraken");
+    kraken.vida = 220;
+    kraken.forca = 25;
+    kraken.inteligencia = 5;
+    kraken.agilidade = 25;
+    kraken.ataquefisico = 20;
+    kraken.ataqueespecial = 20;
+
+    combate(jogador, &pirata);
 
     if (jogador->vida > 0) {
-        printf("Você derrotou %s e avançou para a próxima fase!\n", dragao.nome);
+        printf("Após uma árdua batalha, anoitece e você se encontra perdido em mar aberto. Um pouco a frente surge uma luz no horizonte, você segue até ela.!\n");
         pausar();
         limpar();
-        jogador->fase++;
-        salvar(jogador);
+        printf("Ao se aproximar, percebe que foi atraido para uma armadilha feita por uma sereia, então você se prepara para a luta.\n");
+        pausar();
+        limpar();
+        combate(jogador, &sereia);
+
+        if(jogador->vida > 0){
+            printf("Depois desses eventos o caminho parece estar tranquilo, então você segue em direção a costa, até que o mar se agita e uma espécie de furacão se forma em sua frente, saindo do meio dele um gigantesco Kraken que logo te ataca.\n");
+            pausar();
+            limpar();
+            combate(jogador, &kraken);
+            if(jogador->vida > 0){
+                int respuser;
+                printf("%s foi derrotado.\nVocê ganhou uma melhoria para seus atributos. Escolha o atributo que deseja melhorar.\n1 - Vida\n2 - Força\n3 - Inteligencia\n4 - Agilidade\n", kraken.nome);
+                scanf("%d", &respuser);
+                if(respuser == 1){
+                    jogador->vida_maxima += 20;
+                    printf("Você aumentou sua vida em 20 pontos\n");
+                    jogador->fase++;
+                    salvar(jogador);
+                    pausar();
+                    limpar();
+                    fase3(jogador);
+                }
+                else if(respuser == 2){
+                    jogador->ataquefisico += 5;
+                    printf("Você aumentou seu ataque fisico em 5\n");
+                    jogador->fase++;
+                    salvar(jogador);
+                    pausar();
+                    limpar();
+                    fase3(jogador);                
+                }
+                else if(respuser == 3){
+                    jogador->ataqueespecial += 5;
+                    printf("Você aumentou seu ataque especial em 5\n");
+                    jogador->fase++;
+                    salvar(jogador);
+                    pausar();
+                    limpar();
+                    fase3(jogador);
+                }
+                else{
+                    jogador->agilidade += 5;
+                    printf("Você aumentou sua agilidade em 5\n");
+                    jogador->fase++;
+                    salvar(jogador);
+                    pausar();
+                    limpar();
+                    fase2(jogador);                
+                }  
+
+            }
+
+        }
+
+        else{
+            printf("Você foi derrotado e o jogo acabou.\n");
+        }
 
     } else {
         printf("Você foi derrotado e o jogo acabou.\n");
