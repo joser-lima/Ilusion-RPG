@@ -54,7 +54,7 @@ int fase2(jogador *jogador);
 int fase3(jogador *jogador);
 int fase4(jogador *jogador);
 int fase5(jogador *jogador);
-int fase6(jogador *jogador);
+int creditos(jogador *jogador);
 void limpar();
 void pausar();
 
@@ -290,11 +290,8 @@ int login(){
                     case 5:
                         fase5(&jogadoratual);
                         break;
-                    case 6:
-                        fase6(&jogadoratual);
-                        break;
                     default:
-                        printf("Erro!\n");
+                        creditos(&jogadoratual);
                         break;                    
                 }
             }
@@ -920,10 +917,6 @@ int fase1(jogador *jogador){
     }
     
 
-    if(jogador->frascoscura <= 0){
-        jogador->frascoscura = 5;
-    }
-
     inimigo inseto;
     inimigo fantasma;
     
@@ -1018,9 +1011,6 @@ int fase2(jogador *jogador){
         jogador->vida = jogador->vida_maxima;
     }
     
-    if(jogador->frascoscura <= 0){
-        jogador->frascoscura = 5;
-    }
 
     printf("Continuando a aventura, você segue pelo, a princípio, calmo mar e aproveita para fazer uma pescaria, depois de muita calma e espera você consegue um bau de tesouro, dentro dele tem 3 poções de cura!\n");
     jogador->frascoscura += 3;
@@ -1134,9 +1124,6 @@ int fase3(jogador *jogador){
         jogador->vida = jogador->vida_maxima;
     }
     
-    if(jogador->frascoscura <= 0){
-        jogador->frascoscura = 5;
-    }
 
     
     inimigo boneco;
@@ -1300,24 +1287,182 @@ int fase3(jogador *jogador){
 }
 
 int fase4(jogador *jogador){
-    printf("Voce esta na fase 4\n");
-    jogador->fase++;
-    salvar(jogador);
+    if(jogador->vida <= 0){
+        jogador->vida = jogador->vida_maxima;
+    }
+    
+
+    
+    inimigo grifo;
+    strcpy(grifo.nome, "Grifo");
+    grifo.vida = 300;
+    grifo.forca = 25;
+    grifo.inteligencia = 5;
+    grifo.agilidade = 10;
+    grifo.ataquefisico = 40;
+    grifo.ataqueespecial = 20;
+    
+    inimigo medusa;
+    strcpy(medusa.nome, "Medusa");
+    medusa.vida = 400;
+    medusa.forca = 25;
+    medusa.inteligencia = 5;
+    medusa.agilidade = 20;
+    medusa.ataquefisico = 20;
+    medusa.ataqueespecial = 50;
+
+    inimigo hydra;
+    strcpy(hydra.nome, "Hydra");
+    hydra.vida = 500;
+    hydra.forca = 25;
+    hydra.inteligencia = 5;
+    hydra.agilidade = 25;
+    hydra.ataquefisico = 40;
+    hydra.ataqueespecial = 40;
+
+    printf("Ao chegar no pé da montanha você se depara com uma íngreme subida, e logo se apresenta seu primeiro inimigo, um majestoso Grifo.\n");
+    pausar();
+    limpar();
+    combate(jogador, &grifo);
+
+    if(jogador->vida > 0){
+        printf("Com dificuldades você continua subindo, até encontrar Medusa que quer impedir sua chegada ao topo.\n");
+        pausar();
+        limpar();
+        combate(jogador, &medusa);
+
+        if(jogador->vida > 0){
+            printf("Finalmente você chega em um lugar plano para descansar, mas antes disso tem uma Hydra que precisa derrotar para conquistar esse local.\n");
+            pausar();
+            limpar();
+            combate(jogador, &hydra);
+
+            if(jogador->vida > 0){
+                printf("Vasculhando o lugar você encontra uma mochila com 5 poções de cura, as quais eram de outro aventureiro que tentou desbancar Surtur e não teve tanta sorte.\n");
+                pausar();
+                limpar();
+                jogador->frascoscura += 5;
+                jogador->vida = jogador->vida_maxima;
+                jogador->fase++;
+                salvar(jogador);
+                fase5(jogador);
+            }
+            else{
+                printf("Você foi derrotado e o jogo acabou.\n");
+            }
+        }
+        else{
+            printf("Você foi derrotado e o jogo acabou.\n");
+        }
+    }
+    else{
+        printf("Você foi derrotado e o jogo acabou.\n");
+    }
+
     return 1;
 }
 
 int fase5(jogador *jogador){
-    printf("Voce esta na fase 5\n");
-    jogador->fase++;
-    salvar(jogador);
+    if(jogador->vida <= 0){
+        jogador->vida = jogador->vida_maxima;
+    }
+
+    inimigo dragao;
+    strcpy(dragao.nome, "Rhea");
+    dragao.vida = 500;
+    dragao.forca = 25;
+    dragao.inteligencia = 5;
+    dragao.agilidade = 20;
+    dragao.ataquefisico = 40;
+    dragao.ataqueespecial = 50;
+
+    inimigo surtur;
+    strcpy(surtur.nome, "Surtur");
+    surtur.vida = 700;
+    surtur.forca = 25;
+    surtur.inteligencia = 5;
+    surtur.agilidade = 25;
+    surtur.ataquefisico = 60;
+    surtur.ataqueespecial = 60;
+
+    printf("Depois de descansar você chega caminha um pouco e chega ao topo da montanha e logo avista Surtur levantando sua espada montado em Rhea seu colossal dragão pronto para te atacar.\n");
+    
+    printf("                 ==(W{==========-      /===-                        \n");
+    printf("                              ||  (.--.)         /===-_---~~~~~~~~~------____  \n");
+    printf("                              | \\_,|**|,__      |===-~___                _,-' `\n");
+    printf("                 -==\\\\        `\\ ' `--'   ),    `//~\\\\   ~~~~`---.___.-~~      \n");
+    printf("             ______-==|        /`\\_. .__/\\ \\    | |  \\\\           _-~`         \n");
+    printf("       __--~~~  ,-/-==\\\\      (   | .  |~~~~|   | |   `\\        ,'              \n");
+    printf("    _-~       /'    |  \\\\     )__/==0==-\\<>/   / /      \\      /               \n");
+    printf("  .'        /       |   \\\\      /~\\___/~~\\/  /' /        \\   /'               \n");
+    printf(" /  ____  /         |    \\`\\.__/-~~   \\  |_/'  /          \\/'                   \n");
+    printf("/-'~    ~~~~~---__  |     ~-/~         ( )   /'        _--~`                    \n");
+    printf("                  \\_|      /        _) | ;  ),   __--~~                         \n");
+    printf("                    '~~--_/      _-~/- |/ \\   '-~ \\                             \n");
+    printf("                   {\\__--_/}    / \\\\_>-|)<__\\      \\                            \n");
+    printf("                   /'   (_/  _-~  | |__>--<__|      |                           \n");
+    printf("                  |   _/) )-~     | |__>--<__|      |                           \n");
+    printf("                  / /~ ,_/       / /__>---<__/      |                           \n");
+    printf("                 o-o _//        /-~_>---<__-~      /                            \n");
+    printf("                 (^(~          /~_>---<__-      _-~                             \n");
+    printf("                ,/|           /__>--<__/     _-~                                \n");
+    printf("             ,//('(          |__>--<__|     /                                   \n");
+    printf("            ( ( '))          |__>--<__|    |                                    \n");
+    printf("         `-)) )) (           |__>--<__|    |                                    \n");
+    printf("        ,/,'//( (             \\__>--<__\\    \\                                   \n");
+    printf("      ,( ( ((, ))              ~-__>--<_~-_  ~--____---~'                       \n");
+    printf("    `~/  )` ) ,/|                 ~-_~>--<_/-__       __-~                      \n");
+    printf("  ._-~//( )/ )) `                    ~~-'_/_/ /~~~~~~~__--~                     \n");
+    printf("   ;'( ')/ ,)(                              ~~~~~~~~~~                          \n");
+    printf("  ' ') '( (/                                                                    \n");
+    printf("    '   '  `                                                                    \n");
+
+    printf("Começa o duelo final.\n");
+
+    combate(jogador, &dragao);
+
+    if(jogador->vida > 0){
+        printf("Após derrotar %s, você consegue encostar no coração de Tétis por um breve momento, com isso sua vida é restaurada completamente e seu poder se nivela com o de Surtur, e a batalha começa.\n", dragao.nome);
+        pausar();
+        limpar();
+        jogador->vida = jogador->vida_maxima;
+        combate(jogador, &surtur);
+        if(jogador->vida > 0){
+            printf("Você derrotou Surtur!");
+            printf("Com Surtur derrotado você tomou posse do coração de Tétis, sentindo em suas mãos o poder do mundo, capaz de fazer qualquer coisa que quiser. O que deseja fazer agora?\n1 - Devolver o coração.\n2 - Ficar com o coração.\n");
+            int respostafinal;
+            if(respostafinal == 1){
+                printf("Você se mantém firme em suas convicções e vai até o interior do planeta para devolver o coração a Tétis. Agora que ela está forte e completa novamente ela restaura aquele mundo perfeito que esse planeta um dia foi.\n");
+                pausar();
+                limpar();
+                jogador->fase++;
+                salvar(jogador);
+                creditos(jogador);
+            }
+            else{
+                printf("Você fica fascinado pelo poder e mantém o coração para si. Agora você é novo Deus desse mundo, tendo a vida eterna e o controle do planeta na palma de suas mãos.\n");
+                jogador->fase++;
+                salvar(jogador);
+                creditos(jogador);
+            }
+        }
+        else{
+            printf("Você foi derrotado e o jogo acabou.\n");
+        }
+
+    }
+    else{
+        printf("Você foi derrotado e o jogo acabou.\n");
+    }
+
     return 1;
 }
 
-int fase6(jogador *jogador){
-    printf("Voce esta na fase 6\n");
-    jogador->fase++;
-    salvar(jogador);
-    return 1;
+int creditos(jogador *jogador){
+    printf("Obrigado por jogar!\n");
+    printf("Creditos: \nJosé Reginaldo de Lima Junior\nGabriel Oliveira Alves de Sá\n");
+    pausar();
+    limpar();
 }
 
 void cura(jogador *jogador){
