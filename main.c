@@ -1080,6 +1080,7 @@ int fase2(jogador *jogador){
                 scanf("%d", &respuser);
                 if(respuser == 1){
                     jogador->vida_maxima += 20;
+                    jogador->vida = jogador->vida_maxima;
                     printf("Você aumentou sua vida em 20 pontos\n");
                     jogador->fase++;
                     salvar(jogador);
@@ -1112,7 +1113,7 @@ int fase2(jogador *jogador){
                     salvar(jogador);
                     pausar();
                     limpar();
-                    fase2(jogador);                
+                    fase3(jogador);                
                 }  
 
             }
@@ -1129,9 +1130,172 @@ int fase2(jogador *jogador){
 }
 
 int fase3(jogador *jogador){
-    printf("Voce esta na fase 3\n");
-    jogador->fase++;
-    salvar(jogador);
+    if(jogador->vida <= 0){
+        jogador->vida = jogador->vida_maxima;
+    }
+    
+    if(jogador->frascoscura <= 0){
+        jogador->frascoscura = 5;
+    }
+
+    
+    inimigo boneco;
+    strcpy(boneco.nome, "Boneco de treino");
+    boneco.vida = 70;
+    boneco.forca = 25;
+    boneco.inteligencia = 5;
+    boneco.agilidade = 10;
+    boneco.ataquefisico = 10;
+    boneco.ataqueespecial = 10;
+    
+    inimigo aluno;
+    strcpy(aluno.nome, "Aluno");
+    aluno.vida = 140;
+    aluno.forca = 25;
+    aluno.inteligencia = 5;
+    aluno.agilidade = 20;
+    aluno.ataquefisico = 20;
+    aluno.ataqueespecial = 20;
+
+    inimigo monge;
+    strcpy(monge.nome, "Monge");
+    monge.vida = 250;
+    monge.forca = 25;
+    monge.inteligencia = 5;
+    monge.agilidade = 25;
+    monge.ataquefisico = 30;
+    monge.ataqueespecial = 30;
+
+
+    printf("Passada essa difícil batalha você consegue voltar a terra firme. Andando poucos metros você logo encontra uma vila que acredita ser a que ouvira anteriormente.\n");
+    pausar();
+    limpar();
+
+    printf("Você sente clima muito diferente de tudo que já tinha sentido nesse vilarejo, parece que o caos não entrou nessa civilização, cada passo dado naquela estrada batida de terra você se sentia mais esperançoso sobre esse mundo. Até que uma senhora que o vê passar te indaga com uma pergunta -“O que faz aqui filho ? ” e você prontamente responde  -“Estou atrás de um famoso monge que me auxiliará a salvar esse mundo”, com essa resposta ela fica motivada com seu propósito e conta que o monge vive no templo que está à oeste do vilarejo e é pra lá que deve seguir.\n");
+    pausar();
+    limpar();
+
+    printf("Chegando lá você encontra o monge virado para a parede, fragilizado, então ele sem se quer olhar quem tinha entrado pela porta pergunta -“Também está aqui para dominar o mundo ? ”, e você conta a ele sua trajetória até chegar naquele momento, mas você curioso pergunta -“Por que o também em sua pergunta ? ”, então ele conta -“ Fui eu quem ensinou tudo que Surtur sabe. Ele foi o aluno mais habilidoso que sempre tive, chegou aqui jovem, assim como você, ele era gentil e bondoso, mas a morte de seu pai o mudou completamente, passando a ser obcecado pela vida eterna e visando proteger a qualquer custo aqueles que ele gostava. Após uma intenção discussão que nos tivemos ele foi atrás do coração, mas pela nossa relação ele impediu que a maldição entrasse nesse vilarejo, por isso estamos seguros aqui.” , você então súplica pelo treinamento dele para derrotar Surtur, o monge fica relutante mas aceita te treinar.\n");
+    pausar();
+    limpar();
+
+    combate(jogador, &boneco);
+
+    if(jogador->vida > 0){
+        printf("Você derrotou o boneco de treino e melhorou todos seus atributos!\n");
+        jogador->vida_maxima += 30;
+        jogador->vida = jogador->vida_maxima;
+        jogador->inteligencia += 5;
+        jogador->forca += 5;
+        jogador->ataquefisico += 10;
+        jogador->ataqueespecial += 10;
+        jogador->agilidade += 5;
+        pausar();
+        limpar();
+
+        printf("Após este treinamento, o monge chama um de seus melhores alunos para lutar contra você.\n");
+        pausar();
+        limpar();
+
+        combate(jogador, &aluno);
+
+        if(jogador->vida > 0){
+            printf("Você derrotou o aluno e melhorou todos seus atributos!\n");
+            jogador->vida_maxima += 30;
+            jogador->vida = jogador->vida_maxima;
+            jogador->inteligencia += 5;
+            jogador->forca += 5;
+            jogador->ataquefisico += 10;
+            jogador->ataqueespecial += 10;
+            jogador->agilidade += 5;
+            pausar();
+            limpar();
+
+            printf("Depois de derrotar o aluno com maestria, o Monge se prepara para a última parte do treinamento, uma luta entre vocês dois.\n");
+            pausar();
+            limpar();
+
+            combate(jogador, &monge);
+
+            if(jogador->vida > 0){
+                printf("Você derrotou o Monge e melhorou todos seus atributos!\n");
+                jogador->vida_maxima += 50;
+                jogador->vida = jogador->vida_maxima;
+                jogador->inteligencia += 10;
+                jogador->forca += 10;
+                jogador->ataquefisico += 20;
+                jogador->ataqueespecial += 20;
+                jogador->agilidade += 10;
+                jogador->frascoscura += 10;
+                pausar();
+                limpar();
+
+                int respuser;
+                printf("Agora escolha qual atributo desse melhorar mais ainda: \n1 - Vida\n2 - Força\n3 - Inteligencia\n4 - Agilidade\n");
+                scanf("%d", &respuser);
+                if(respuser == 1){
+                    jogador->vida_maxima += 50;
+                    jogador->vida = jogador->vida_maxima;
+                    printf("Você aumentou sua vida em 50 pontos\n");
+                    jogador->fase++;
+                    salvar(jogador);
+                    pausar();
+                    limpar();
+                    printf("Depois desse treinamento o monge da a você 10 frascos de cura e diz que Surtur está em Titã, a maior montanha do planeta, que é para lá que você deve seguir.\n");
+                    pausar();
+                    limpar();
+                    fase4(jogador);
+                }
+                else if(respuser == 2){
+                    jogador->ataquefisico += 20;
+                    printf("Você aumentou seu ataque fisico em 20\n");
+                    jogador->fase++;
+                    salvar(jogador);
+                    pausar();
+                    limpar();
+                    printf("Depois desse treinamento o monge da a você 10 frascos de cura e diz que Surtur está em Titã, a maior montanha do planeta, que é para lá que você deve seguir.\n");
+                    pausar();
+                    limpar();
+                    fase4(jogador);                
+                }
+                else if(respuser == 3){
+                    jogador->ataqueespecial += 20;
+                    printf("Você aumentou seu ataque especial em 20\n");
+                    jogador->fase++;
+                    salvar(jogador);
+                    pausar();
+                    limpar();
+                    printf("Depois desse treinamento o monge da a você 10 frascos de cura e diz que Surtur está em Titã, a maior montanha do planeta, que é para lá que você deve seguir.\n");
+                    pausar();
+                    limpar();
+                    fase4(jogador);
+                }
+                else{
+                    jogador->agilidade += 10;
+                    printf("Você aumentou sua agilidade em 10\n");
+                    jogador->fase++;
+                    salvar(jogador);
+                    pausar();
+                    limpar();
+                    printf("Depois desse treinamento o monge da a você 10 frascos de cura e diz que Surtur está em Titã, a maior montanha do planeta, que é para lá que você deve seguir.\n");
+                    pausar();
+                    limpar();
+                    fase4(jogador);                
+                }
+            }
+            else{
+                printf("Você foi derrotado e o jogo acabou.\n");
+            }
+
+        }
+        else{
+            printf("Você foi derrotado e o jogo acabou.\n");
+        }
+
+    }
+    else{
+        printf("Você foi derrotado e o jogo acabou.\n");
+    }
     return 1;
 }
 
@@ -1163,13 +1327,15 @@ void cura(jogador *jogador){
         limpar();
     }
     else{
-        jogador->vida += 30;
+        jogador->vida += 50;
         jogador->frascoscura -= 1;
         if(jogador->vida > jogador->vida_maxima){
             jogador->vida = jogador->vida_maxima;
         }
         SLEEP(1000);
         printf("Você usou um frasco de cura!\n");
+        SLEEP(1000);
+        printf("Você possui %d frascos de cura restantes.\n", jogador->frascoscura);
         SLEEP(1000);
         printf("Vida de %s restante: %d\n",jogador->usuario, jogador->vida);
         pausar();
