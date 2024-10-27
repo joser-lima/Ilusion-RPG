@@ -23,7 +23,7 @@ Para compilar o jogo, siga estas instruções:
 
 1. Clone o repositório:
    ```bash
-   git clone https://github.com/seu-usuario/o-coracao-de-tetis.git
+   git clone https://github.com/seu-usuario/Ilusion-RPG.git
 
 2. Navegue até a pasta do objeto:
    ```bash
