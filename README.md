@@ -17,6 +17,11 @@ O objetivo principal do jogo é explorar o planeta, enfrentar criaturas corrompi
 - **Combate**: Enfrente animais corrompidos pelo poder de Surtur e use habilidades especiais para derrotá-los.
 - **Evolução do Personagem**: Melhore suas habilidades e equipamentos ao longo do jogo.
 
+## Cadastro no jogo
+
+- Escolher um nome de usuário **sem espaços**.
+- Definir uma senha com **exatamente 6 digitos**.
+
 ## Como Compilar
 
 Para compilar o jogo, siga estas instruções:
